@@ -3,7 +3,14 @@ import axios from 'axios';
 const URL = process.env.REACT_APP_API_URL;
 
 interface GetRandomHanziResponse {
-  hanzi: string[];
+  value: {
+    id: string;
+    hanViet: string;
+    pinyin: string;
+    cantonese: string;
+    meaningInVietnamese: string;
+    insertedOrder: number;
+  }[];
 }
 
 // ✅ Updated function using axios

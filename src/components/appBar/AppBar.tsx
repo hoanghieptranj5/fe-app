@@ -16,6 +16,7 @@ const CustomAppBar: React.FC = () => {
     { path: "/", label: "Home", icon: <RestoreIcon /> },
     { path: "/about", label: "About", icon: <FavoriteIcon /> },
     { path: "/users", label: "Users", icon: <LocationOnIcon /> },
+    { path: "/hanzi", label: "Hanzi", icon: <LocationOnIcon /> },
   ];
 
   // Helper function to get the value based on path

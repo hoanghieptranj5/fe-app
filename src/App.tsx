@@ -15,6 +15,7 @@ import "./App.scss";
 import { setCurrentPage } from "./redux/slices/NavigationSlice";
 import { RootState } from "./redux/store";
 import CustomAppBar from "./components/appBar/AppBar";
+import HanziContainer from "./pages/hanzi/HanziContainer";
 
 const queryClient = new QueryClient();
 
@@ -47,6 +48,7 @@ const App: React.FC = () => {
             <Route path="/about" element={<About />} />
             <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
             <Route path="/users" element={<PrivateRoute element={<User />} />} />
+            <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
           </Routes>
         </Router>
       </QueryClientProvider>

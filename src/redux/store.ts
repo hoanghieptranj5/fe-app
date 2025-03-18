@@ -1,10 +1,8 @@
 import {configureStore} from "@reduxjs/toolkit";
-import hanziCardReducer from "./slices/HanziCardSlice";
 import navigationReducer from "./slices/NavigationSlice";
 
 const store = configureStore({
   reducer: {
-    hanziCard: hanziCardReducer,
     navigation: navigationReducer,
   }
 });

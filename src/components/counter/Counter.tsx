@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, increment, decrement, setValue } from "../store";
+import { RootState, increment, decrement, setValue } from "../../store";
 import { Button, Box, Typography, TextField } from "@mui/material";
 
 const Counter: React.FC = () => {

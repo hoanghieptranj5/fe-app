@@ -1,36 +1,56 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
-import Login from "./pages/Login";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import store from "./redux/store";
+import Login from "./pages/login/Login";
+import About from "./pages/about/About";
+import Home from "./pages/home/Home";
+import User from "./pages/users/User";
+import PageNotFound from "./pages/error/PageNotFound";
+import PrivateRoute from "./components/privateRoutes/PrivateRoute"; // Import PrivateRoute
+
+import "./App.scss";
+import { setCurrentPage } from "./redux/slices/NavigationSlice";
+import { RootState } from "./redux/store";
+import CustomAppBar from "./components/appBar/AppBar";
+
+const queryClient = new QueryClient();
+
+// Custom hook to dispatch current page
+const usePageNavigation = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const page = window.location.pathname.split("/")[1] || "Home";
+    dispatch(setCurrentPage(page));
+  }, [dispatch]);
+};
 
 const App: React.FC = () => {
-  return (
-    <Router>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            My App
-          </Typography>
-          <Button color="inherit" component={Link} to="/">
-            Home
-          </Button>
-          <Button color="inherit" component={Link} to="/about">
-            About
-          </Button>
-          <Button color="inherit" component={Link} to="/users">
-            Users
-          </Button>
-          <Button color="inherit" component={Link} to="/login">
-            Login
-          </Button>
-        </Toolbar>
-      </AppBar>
+  const currentPage = useSelector((state: RootState) => {
+    console.log(state);  // Add this to inspect the state
+    return state.navigation?.currentPage;  // Ensure you're checking for undefined state
+  });
 
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+  usePageNavigation();
+
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <CustomAppBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/about" element={<About />} />
+            <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
+            <Route path="/users" element={<PrivateRoute element={<User />} />} />
+          </Routes>
+        </Router>
+      </QueryClientProvider>
+    </Provider>
   );
 };
 

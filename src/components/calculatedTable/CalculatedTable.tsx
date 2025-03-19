@@ -103,7 +103,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
       </Grid>
 
       <TableContainer component={Paper} sx={{ marginTop: 3 }}>
-        <Table sx={{ minWidth: 650 }}>
+        <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow sx={{ backgroundColor: '#f4f4f4' }}>
               <TableCell><strong>From</strong></TableCell>

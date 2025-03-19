@@ -9,7 +9,8 @@ import {
   Button,
   Dialog,
   DialogTitle,
-  DialogContent, DialogActions,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomHanzi } from "../../services/HanziService"; // Import the service
@@ -22,18 +23,14 @@ const truncateDescription = (text: string, limit: number) => {
   return text;
 };
 
-
 // Function to format the description for readability
 const formatDescription = (description: string | null | undefined) => {
-  // Check if description is null or undefined
   if (!description) {
     return <Typography variant="body2">No description available.</Typography>;
   }
 
-  // Split the description based on the numbered items
   const parts = description.split(/\d+\./).filter(Boolean);  // Split at "1.", "2.", "3." etc., and remove empty parts
 
-  // Map the parts to a formatted list
   return (
     <ul>
       {parts.map((part, index) => (
@@ -44,32 +41,34 @@ const formatDescription = (description: string | null | undefined) => {
     </ul>
   );
 };
+
 // Fetch Chinese characters from the backend using the service function
 const fetchChineseCharacters = async () => {
   const token = localStorage.getItem("token") || "";  // Assume token is stored in localStorage
-  const length = 20;  // You want 20 characters, as mentioned in the task
+  const length = 20;
 
-  // Call your service function to get 20 random Hanzi
   const data = await getRandomHanzi(length, token);
 
-  // Map over the data to format it appropriately for the page
   return data.value.map((character: any) => ({
-    character: character.id,               // Chinese character (id)
-    hanViet: character.hanViet,            // Vietnamese meaning
-    pinyin: character.pinyin,              // Pinyin pronunciation
-    cantonese: character.cantonese,        // Cantonese pronunciation
-    description: character.meaningInVietnamese,  // Vietnamese meaning (use as description)
+    character: character.id,
+    hanViet: character.hanViet,
+    pinyin: character.pinyin,
+    cantonese: character.cantonese,
+    description: character.meaningInVietnamese,
   }));
 };
 
 const HanziContainer: React.FC = () => {
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["chineseCharacters"],
     queryFn: fetchChineseCharacters,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
   });
 
   const [open, setOpen] = useState(false);
   const [selectedCharacter, setSelectedCharacter] = useState<any>(null);
+  const [refreshing, setRefreshing] = useState(false);
 
   const handleOpenDialog = (character: any) => {
     setSelectedCharacter(character);
@@ -80,25 +79,60 @@ const HanziContainer: React.FC = () => {
     setOpen(false);
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true); // Indicate refresh is in progress
+    await refetch(); // Trigger the refetching of data manually
+    setRefreshing(false); // Reset the refreshing state after the refetch
+  };
+
   if (isLoading) return <CircularProgress />;
   if (error) return <Typography color="error">Error loading data: {error.message}</Typography>;
 
   return (
-    <Box sx={{ padding: 4 }}>
+    <Box sx={{ padding: 4, marginBottom: 8 }}>
       <Typography variant="h3" align="center" sx={{ marginBottom: 4 }}>
         Chinese Characters of the Day
       </Typography>
 
+      {/* Refresh Button */}
+      <Box sx={{ textAlign: "center", marginBottom: 4 }}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleRefresh}
+          sx={{
+            borderRadius: "50px", // Rounded button
+            padding: "10px 20px",
+            fontWeight: "bold",
+            position: "relative",
+            transition: "transform 0.2s ease, background-color 0.3s ease", // Add transition
+            "&:hover": {
+              transform: "scale(1.1)", // Slight grow on hover
+              backgroundColor: "#1976d2", // Darker color on hover
+            },
+            "&:active": {
+              transform: "scale(1)", // Reset size on click
+            },
+          }}
+        >
+          {refreshing ? (
+            <CircularProgress size={24} sx={{ color: "white" }} /> // Show a loading spinner while refreshing
+          ) : (
+            "Refresh"
+          )}
+        </Button>
+      </Box>
+
       <Grid container spacing={4} justifyContent="center">
         {data && data.map((character: any) => (
           <Grid item xs={12} sm={9} md={6} lg={3} key={character.character}>
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 380, minHeight: 380, marginTop: 4 }}>
               <CardContent>
                 <Typography variant="h2" align="center" color="primary">
                   {character.character}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center">
-                  Pinyin: {character.pinyin}
+                  <strong>Pinyin</strong>: {character.pinyin}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center">
                   <strong>Cantonese:</strong> {character.cantonese}

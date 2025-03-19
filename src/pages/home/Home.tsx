@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import CalculatedTable from "../../components/calculatedTable/CalculatedTable";
 import { Typography, Button, Box, Grid, TextField, Paper } from '@mui/material';
+import { Link } from "react-router-dom";
 
 const isLoggedIn: () => boolean = () => {
   return localStorage.getItem('token') !== null;
@@ -51,9 +52,11 @@ const Home: React.FC = () => {
         <Typography variant="body1" color="textSecondary" paragraph>
           Please log in to view your calculated prices.
         </Typography>
-        <Button variant="contained" color="primary" href="/login">
-          Log In
-        </Button>
+        <Link to="/login" style={{ textDecoration: 'none' }}>
+          <Button variant="contained" color="primary">
+            Log In
+          </Button>
+        </Link>
       </Box>
     );
   }

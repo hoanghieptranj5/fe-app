@@ -85,7 +85,40 @@ const HanziContainer: React.FC = () => {
     setRefreshing(false); // Reset the refreshing state after the refetch
   };
 
-  if (isLoading) return <CircularProgress />;
+  if (isLoading) {
+    return (
+      <Box sx={{ padding: 4, textAlign: "center" }}>
+        <Typography variant="h3" sx={{ marginBottom: 4 }}>
+          Chinese Characters of the Day
+        </Typography>
+        <Box sx={{ textAlign: "center", marginBottom: 4 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleRefresh}
+            sx={{
+              borderRadius: "50px", // Rounded button
+              padding: "10px 20px",
+              fontWeight: "bold",
+              position: "relative",
+              transition: "transform 0.2s ease, background-color 0.3s ease", // Add transition
+              "&:hover": {
+                transform: "scale(1.1)", // Slight grow on hover
+                backgroundColor: "#1976d2", // Darker color on hover
+              },
+              "&:active": {
+                transform: "scale(1)", // Reset size on click
+              },
+            }}
+          >
+            <CircularProgress size={24} sx={{ color: "white" }} /> {/* Loading spinner */}
+            {"Now Loading..."}
+          </Button>
+        </Box>
+      </Box>
+    );
+  }
+
   if (error) return <Typography color="error">Error loading data: {error.message}</Typography>;
 
   return (

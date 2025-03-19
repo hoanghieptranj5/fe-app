@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, BottomNavigation, BottomNavigationAction, Button, Box, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import RestoreIcon from "@mui/icons-material/Restore";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import CalculateIcon from "@mui/icons-material/Calculate";
+import InfoIcon from "@mui/icons-material/Info";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import TranslateIcon from '@mui/icons-material/Translate';
 
 const CustomAppBar: React.FC = () => {
   const location = useLocation();
@@ -13,10 +14,10 @@ const CustomAppBar: React.FC = () => {
 
   // Array of route configuration
   const routes = [
-    { path: "/", label: "Home", icon: <RestoreIcon /> },
-    { path: "/about", label: "About", icon: <FavoriteIcon /> },
-    { path: "/users", label: "Users", icon: <LocationOnIcon /> },
-    { path: "/hanzi", label: "Hanzi", icon: <LocationOnIcon /> },
+    { path: "/", label: "Calculator", icon: <CalculateIcon /> },
+    { path: "/about", label: "About", icon: <InfoIcon /> },
+    { path: "/users", label: "Users", icon: <AccountCircleIcon /> },
+    { path: "/hanzi", label: "Hanzi", icon: <TranslateIcon /> },
   ];
 
   // Helper function to get the value based on path

@@ -75,7 +75,15 @@ const CustomAppBar: React.FC = () => {
         showLabels
         value={value}
         onChange={(event, newValue) => setValue(newValue)}
-        sx={{ width: "100%", position: "fixed", bottom: 0 }}
+        sx={{
+          width: "100%",
+          position: "fixed",
+          bottom: 0,
+          left: 0,
+          zIndex: 1000,
+          backgroundColor: "white",
+          boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)", // Optional shadow for better visibility
+        }}
       >
         {routes.map((route, index) => (
           <BottomNavigationAction

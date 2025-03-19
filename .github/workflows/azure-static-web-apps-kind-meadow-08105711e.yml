@@ -13,11 +13,10 @@ jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
+    name: Build and Deploy Job      
     steps:
       - name: Set CI to false to avoid warnings as errors
         run: echo "CI=false" >> $GITHUB_ENV
-    steps:
       - uses: actions/checkout@v3
         with:
           submodules: true

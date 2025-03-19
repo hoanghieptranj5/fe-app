@@ -40,7 +40,6 @@ const CustomAppBar: React.FC = () => {
     // Remove token from localStorage and close the dialog
     localStorage.removeItem("token");
     setOpenDialog(false);
-    console.log("Logged out");
 
     // Navigate to the home page after logging out
     navigate("/", { replace: true });

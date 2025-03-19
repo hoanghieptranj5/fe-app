@@ -54,7 +54,6 @@ const Login: React.FC = () => {
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: (credentials: LoginCredentials) => loginUser(credentials),
     onSuccess: (response: LoginResponse) => {
-      console.log("Login successful:", response);
       localStorage.setItem("token", response.token);
       navigate("/");  // Navigate to homepage upon successful login
     },

@@ -16,7 +16,7 @@ const CustomAppBar: React.FC = () => {
   const routes = [
     { path: "/", label: "Calculator", icon: <CalculateIcon /> },
     { path: "/about", label: "About", icon: <InfoIcon /> },
-    { path: "/users", label: "Users", icon: <AccountCircleIcon /> },
+    { path: "/shared", label: "Shared", icon: <AccountCircleIcon /> },
     { path: "/hanzi", label: "Hanzi", icon: <TranslateIcon /> },
   ];
 

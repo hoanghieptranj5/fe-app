@@ -7,7 +7,7 @@ import store from "./redux/store";
 import Login from "./pages/login/Login";
 import About from "./pages/about/About";
 import Home from "./pages/home/Home";
-import User from "./pages/users/User";
+import SharedMoney from "./pages/sharedMoney/SharedMoney";
 import PageNotFound from "./pages/error/PageNotFound";
 import PrivateRoute from "./components/privateRoutes/PrivateRoute"; // Import PrivateRoute
 
@@ -46,7 +46,7 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/about" element={<About />} />
             <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
-            <Route path="/users" element={<PrivateRoute element={<User />} />} />
+            <Route path="/shared" element={<PrivateRoute element={<SharedMoney />} />} />
             <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
           </Routes>
         </Router>

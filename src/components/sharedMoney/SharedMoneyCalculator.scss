@@ -1,0 +1,90 @@
+.shared-money-calculator {
+  padding: 2rem;
+  font-family: 'Roboto', sans-serif;
+
+  .title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #3f51b5;
+  }
+
+  .total-paper {
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    background-color: #e8f5e9;
+    border-radius: 8px;
+  }
+
+  .paper {
+    padding: 1.5rem;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    .paper-title {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .add-button {
+      margin-top: 1rem;
+      background-color: #4caf50;
+      color: white;
+
+      &:hover {
+        background-color: #388e3c;
+      }
+    }
+
+    .list {
+      margin-top: 1rem;
+
+      .delete-icon {
+        color: #d32f2f;
+      }
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 0.8rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      tr:hover {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+
+  .MuiSelect-select {
+    min-width: 120px;
+  }
+
+  .MuiTextField-root {
+    margin-bottom: 1rem;
+  }
+
+  // Adjust paper widths
+  .paper:nth-child(1) { // Expenses paper
+    flex: 0.5; // Thinner
+  }
+
+  .paper:nth-child(2) { // Expenses paper
+    flex: 0.5; // Thinner
+  }
+
+  .paper:nth-child(3), // Items Paid paper
+  .paper:nth-child(4) { // Balance Sheet paper
+    flex: 1.0; // Wider
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "routes": [
+    {
+      "route": "/hanzi",
+      "methods": [
+        "get",
+        "post",
+        "put",
+        "delete",
+        "options"
+      ],
+      "rewrite": "/index.html"
+    }
+  ]
+}

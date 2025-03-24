@@ -11,7 +11,7 @@
       "/static/css/*.css",
       "/static/js/*.js",
       "/static/images/*.png",
-      "/assets/*.*"
+      "/assets/*"
     ]
   }
 }

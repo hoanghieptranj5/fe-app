@@ -23,22 +23,19 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import "./SharedMoneyCalculator.scss";
-
-interface Person {
-  id: number;
-  name: string;
-}
-
-interface Expense {
-  id: number;
-  payer: number;
-  amount: number;
-  description: string;
-}
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import {
+  addPerson,
+  removePerson,
+  addExpense,
+  removeExpense,
+} from "../../redux/slices/peopleExpensesSlice";
 
 const SharedMoneyCalculator: React.FC = () => {
-  const [people, setPeople] = useState<Person[]>([]);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const people = useAppSelector((state) => state.peopleExpenses.people);
+  const expenses = useAppSelector((state) => state.peopleExpenses.expenses);
+  const dispatch = useAppDispatch();
+
   const [newPerson, setNewPerson] = useState("");
   const [newExpense, setNewExpense] = useState({ payer: "", amount: "", description: "" });
   const [error, setError] = useState<string | null>(null);
@@ -50,27 +47,34 @@ const SharedMoneyCalculator: React.FC = () => {
     setTimeout(() => setError(null), 3000);
   };
 
-  const addPerson = () => {
+  const addPersonHandler = () => {
     if (!newPerson.trim()) return handleError("Person name cannot be empty");
-    setPeople([...people, { id: Date.now(), name: newPerson.trim() }]);
+    dispatch(addPerson({ id: Date.now(), name: newPerson.trim() }));
     setNewPerson("");
   };
 
-  const removePerson = (id: number) => {
+  const removePersonHandler = (id: number) => {
     if (expenses.some((e) => e.payer === id)) return handleError("Cannot remove a person who has paid for an item.");
-    setPeople(people.filter((p) => p.id !== id));
+    dispatch(removePerson(id));
   };
 
-  const addExpense = () => {
+  const addExpenseHandler = () => {
     if (!newExpense.payer || !newExpense.amount || !newExpense.description.trim()) {
       return handleError("All expense fields must be filled out");
     }
-    setExpenses([...expenses, { id: Date.now(), payer: Number(newExpense.payer), amount: Number(newExpense.amount), description: newExpense.description.trim() }]);
+    dispatch(
+      addExpense({
+        id: Date.now(),
+        payer: Number(newExpense.payer),
+        amount: Number(newExpense.amount),
+        description: newExpense.description.trim(),
+      })
+    );
     setNewExpense({ payer: "", amount: "", description: "" });
   };
 
-  const removeExpense = (id: number) => {
-    setExpenses(expenses.filter((e) => e.id !== id));
+  const removeExpenseHandler = (id: number) => {
+    dispatch(removeExpense(id));
   };
 
   const calculateDebts = () => {
@@ -107,7 +111,7 @@ const SharedMoneyCalculator: React.FC = () => {
             fullWidth
             margin="dense"
           />
-          <Button onClick={addPerson} variant="contained" className="add-button">
+          <Button onClick={addPersonHandler} variant="contained" className="add-button">
             Add Person
           </Button>
           <List className="list">
@@ -115,7 +119,7 @@ const SharedMoneyCalculator: React.FC = () => {
               <ListItem
                 key={p.id}
                 secondaryAction={
-                  <IconButton onClick={() => removePerson(p.id)}>
+                  <IconButton onClick={() => removePersonHandler(p.id)}>
                     <Delete className="delete-icon" />
                   </IconButton>
                 }
@@ -158,7 +162,7 @@ const SharedMoneyCalculator: React.FC = () => {
             fullWidth
             margin="dense"
           />
-          <Button onClick={addExpense} variant="contained" className="add-button">
+          <Button onClick={addExpenseHandler} variant="contained" className="add-button">
             Add Expense
           </Button>
         </Paper>
@@ -182,7 +186,7 @@ const SharedMoneyCalculator: React.FC = () => {
                     <TableCell>{e.description}</TableCell>
                     <TableCell>{formatCurrency(e.amount)}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => removeExpense(e.id)}>
+                      <IconButton onClick={() => removeExpenseHandler(e.id)}>
                         <Delete className="delete-icon" />
                       </IconButton>
                     </TableCell>

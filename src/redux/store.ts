@@ -1,9 +1,11 @@
 import {configureStore} from "@reduxjs/toolkit";
 import navigationReducer from "./slices/NavigationSlice";
+import peopleExpensesReducer from "./slices/peopleExpensesSlice";
 
 const store = configureStore({
   reducer: {
     navigation: navigationReducer,
+    peopleExpenses: peopleExpensesReducer,
   }
 });
 

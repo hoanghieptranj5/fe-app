@@ -1,0 +1,120 @@
+/* src/components/About.module.scss */
+
+// --- Variables ---
+$feed-background: #f0f2f5; // Light grey background
+$card-background: #ffffff;
+$primary-text: #050505;    // Primary text color
+$secondary-text: #65676b;  // Secondary text color
+$border-color: #e0e0e0;    // Separator color
+$spacing-unit: 16px;
+$avatar-color: #1877f2; // Default avatar blue
+
+// --- Styles ---
+
+.feedContainer {
+  background-color: $feed-background;
+  padding: $spacing-unit * 2 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Center the cards horizontally
+}
+
+.postCard {
+  background-color: $card-background;
+  width: 100%;
+  max-width: 600px; // Max-width for feed items
+  margin-bottom: $spacing-unit * 1.5;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  overflow: hidden; // Keep content within rounded borders
+
+  // Use variant="outlined" on Card component for border instead of shadow
+  // border: 1px solid $border-color;
+}
+
+.avatar {
+  background-color: $avatar-color;
+}
+
+// Optional: Global overrides for CardHeader text (use carefully)
+:global(.MuiCardHeader-title) {
+  font-weight: 600 !important;
+  font-size: 0.95rem !important;
+  color: $primary-text;
+}
+
+:global(.MuiCardHeader-subheader) {
+  font-size: 0.8rem !important;
+  color: $secondary-text;
+}
+
+.cardMedia {
+  // Specific styles for CardMedia (image) if needed beyond sx prop
+  // e.g., border-top: 1px solid $border-color;
+}
+
+// Styles for the responsive YouTube video wrapper
+.videoWrapper {
+  position: relative;
+  // padding-bottom = (height / width) * 100
+  padding-bottom: 56.25%; // For 16:9 aspect ratio
+  height: 0;
+  overflow: hidden;
+  width: 100%;
+  background-color: #000; // Black background while video loads
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0; // Remove default iframe border
+  }
+}
+
+.cardContent {
+  padding: $spacing-unit !important; // Consistent padding
+}
+
+.sectionTitleInContent {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: $spacing-unit * 0.75;
+  color: $primary-text;
+}
+
+.paragraph {
+  color: $primary-text;
+  line-height: 1.5;
+  margin-bottom: $spacing-unit;
+  white-space: pre-wrap; // Preserve line breaks from data string
+  word-wrap: break-word; // Break long words
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Styles for the actions bar
+.cardActions {
+  border-top: 1px solid $border-color;
+  padding: ($spacing-unit * 0.5) $spacing-unit;
+
+  .MuiIconButton-root {
+    color: $secondary-text;
+    padding: $spacing-unit * 0.75;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
+
+  // Style for the count text next to icons
+  .MuiTypography-body2 {
+    color: $secondary-text;
+    font-weight: 500;
+    font-size: 0.85rem; // Slightly smaller count text
+  }
+}

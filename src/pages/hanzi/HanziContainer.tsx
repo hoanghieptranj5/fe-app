@@ -192,7 +192,7 @@ const HanziContainer: React.FC = () => {
       {/* Dialog for full description */}
       <Dialog open={open} onClose={handleCloseDialog} maxWidth="md" fullWidth>
         <DialogTitle>
-          <Typography variant="h3" color="primary" fontFamily="kaiti, songti, heiti">
+          <Typography variant="h3" color="primary" fontFamily="Ma Shan Zheng, kaiti, songti, heiti">
             {selectedCharacter?.character}
           </Typography>
         </DialogTitle>

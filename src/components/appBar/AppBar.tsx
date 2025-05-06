@@ -5,6 +5,7 @@ import CalculateIcon from "@mui/icons-material/Calculate";
 import InfoIcon from "@mui/icons-material/Info";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import TranslateIcon from '@mui/icons-material/Translate';
+import { FitnessCenter } from "@mui/icons-material";
 
 const CustomAppBar: React.FC = () => {
   const location = useLocation();
@@ -18,6 +19,7 @@ const CustomAppBar: React.FC = () => {
     { path: "/about", label: "About", icon: <InfoIcon /> },
     { path: "/shared", label: "Shared", icon: <AccountCircleIcon /> },
     { path: "/hanzi", label: "Hanzi", icon: <TranslateIcon /> },
+    { path: "/workout", label: "Workout", icon: <FitnessCenter /> },
   ];
 
   // Helper function to get the value based on path

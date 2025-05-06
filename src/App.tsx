@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "./redux/store";
@@ -16,6 +15,7 @@ import { setCurrentPage } from "./redux/slices/NavigationSlice";
 import { RootState } from "./redux/store";
 import CustomAppBar from "./components/appBar/AppBar";
 import HanziContainer from "./pages/hanzi/HanziContainer";
+import { WorkoutTimer } from "./pages/exercise/WorkoutTimer";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +48,7 @@ const App: React.FC = () => {
             <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
             <Route path="/shared" element={<PrivateRoute element={<SharedMoney />} />} />
             <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
+            <Route path="/workout" element={<PrivateRoute element={<WorkoutTimer />} />} />
           </Routes>
         </Router>
       </QueryClientProvider>

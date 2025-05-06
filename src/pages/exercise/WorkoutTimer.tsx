@@ -8,16 +8,56 @@ interface Exercise {
 }
 
 const exercises: Exercise[] = [
-  { name: "High Knees", duration: 40, mediaUrl: "https://media.giphy.com/media/xT0BKJuFXVcbZpuRmo/giphy.gif?cid=ecf05e4781wrq5tvhazmei96gfsoq9oae606kb8m5oj2m5kq&ep=v1_gifs_search&rid=giphy.gif&ct=g" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Jumping Jacks", duration: 40, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmFjb3AyYTl6ZTd4OXczeGg1c3g4d21mOWFnYzM3azM5ZTdrbm5vYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QXg8kI7Mu4slyiO0Md/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Mountain Climbers", duration: 40, mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif?cid=ecf05e47aos907pgqxhb2l011zs12vsrcfu76une0d0a3e0q&ep=v1_gifs_search&rid=giphy.gif&ct=g" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Squat to Jump", duration: 40, mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif?cid=ecf05e47zc8k22mlyoxn5i6n89td70vju2eg1jf4n3lzgrxg&ep=v1_gifs_search&rid=giphy.gif&ct=g" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Plank Shoulder Taps", duration: 40, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTJmcXd5M2FkOHo3c3VtZW5iZ3dybHBtMHFpczJ5cngzdnhrY3BqayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/CLjw2mHysNEYw/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif" },
+  {
+    name: "High Knees",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/xT0BKJuFXVcbZpuRmo/giphy.gif?cid=ecf05e4781wrq5tvhazmei96gfsoq9oae606kb8m5oj2m5kq&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Jumping Jacks",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmFjb3AyYTl6ZTd4OXczeGg1c3g4d21mOWFnYzM3azM5ZTdrbm5vYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QXg8kI7Mu4slyiO0Md/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Mountain Climbers",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif?cid=ecf05e47aos907pgqxhb2l011zs12vsrcfu76une0d0a3e0q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Squat to Jump",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif?cid=ecf05e47zc8k22mlyoxn5i6n89td70vju2eg1jf4n3lzgrxg&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Plank Shoulder Taps",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTJmcXd5M2FkOHo3c3VtZW5iZ3dybHBtMHFpczJ5cngzdnhrY3BqayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/CLjw2mHysNEYw/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
+  },
 ];
 
 const TOTAL_ROUNDS = 3;
@@ -54,17 +94,28 @@ export const WorkoutTimer: React.FC = () => {
   const startExercise = () => {
     if (currentExercise >= exercises.length) {
       if (currentRound >= TOTAL_ROUNDS) {
+        // Workout is finished!
+        alert("🎉 Workout Completed! You beast!");
         return;
       } else {
+        // Move to next round and restart exercises
         setCurrentRound((prev) => prev + 1);
         setCurrentExercise(0);
+
+        // ⚡️ Important: Delay the call to start the next exercise!
+        setTimeout(() => {
+          startExercise();
+        }, 0);
+
+        return;
       }
-    } else {
-      setShowCountdown(true);
-      setCountdownNumber(3);
-      countdownPhase();
     }
+
+    setShowCountdown(true);
+    setCountdownNumber(3);
+    countdownPhase();
   };
+
 
   const countdownPhase = () => {
     clearIntervalIfExist();

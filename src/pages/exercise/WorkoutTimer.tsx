@@ -4,152 +4,105 @@ import { Box, Button, Typography, LinearProgress } from "@mui/material";
 interface Exercise {
   name: string;
   duration: number;
-  mediaUrl: string; // thêm media minh họa
+  mediaUrl: string;
 }
 
 const exercises: Exercise[] = [
-  {
-    name: "High Knees",
-    duration: 40,
-    mediaUrl: "https://media.giphy.com/media/xT0BKJuFXVcbZpuRmo/giphy.gif?cid=ecf05e4781wrq5tvhazmei96gfsoq9oae606kb8m5oj2m5kq&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-  },
-  {
-    name: "Relax",
-    duration: 20,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
-  },
-  {
-    name: "Jumping Jacks",
-    duration: 40,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExZmFjb3AyYTl6ZTd4OXczeGg1c3g4d21mOWFnYzM3azM5ZTdrbm5vYiZlcD12MV9naWZzX3NlYXJjaCZjdD1n/QXg8kI7Mu4slyiO0Md/giphy.gif",
-  },
-  {
-    name: "Relax",
-    duration: 20,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
-  },
-  {
-    name: "Mountain Climbers",
-    duration: 40,
-    mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif?cid=ecf05e47aos907pgqxhb2l011zs12vsrcfu76une0d0a3e0q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-  },
-  {
-    name: "Relax",
-    duration: 20,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
-  },
-  {
-    name: "Squat to Jump",
-    duration: 40,
-    mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif?cid=ecf05e47zc8k22mlyoxn5i6n89td70vju2eg1jf4n3lzgrxg&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-  },
-  {
-    name: "Relax",
-    duration: 20,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
-  },
-  {
-    name: "Plank Shoulder Taps",
-    duration: 40,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExYTJmcXd5M2FkOHo3c3VtZW5iZ3dybHBtMHFpczJ5cngzdnhrY3BqayZlcD12MV9naWZzX3NlYXJjaCZjdD1n/CLjw2mHysNEYw/giphy.gif",
-  },
-  {
-    name: "Relax",
-    duration: 20,
-    mediaUrl: "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTF5dXdpNjRnbTFxOHNvNTllamMxMWwwYjV6cjRudHI5MWN6bm1ubyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/bDTtPo3HyEluE/giphy.gif",
-  },
+  { name: "High Knees", duration: 40, mediaUrl: "https://media1.popsugar-assets.com/files/thumbor/XiCmltZ1u3xHSs9UiJgTmzswHSs/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/06/29/850/n/1922729/a3a1ef261bffbc38_IMB_6Utd4M/i/High-Knees.GIF" },
+  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
+  { name: "Jumping Jacks", duration: 40, mediaUrl: "https://media.giphy.com/media/QXg8kI7Mu4slyiO0Md/giphy.gif" },
+  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
+  { name: "Mountain Climbers", duration: 40, mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif" },
+  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
+  { name: "Squat to Jump", duration: 40, mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif" },
+  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
+  { name: "Plank Shoulder Taps", duration: 40, mediaUrl: "https://media.giphy.com/media/CLjw2mHysNEYw/giphy.gif" },
+  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
 ];
 
 const TOTAL_ROUNDS = 3;
+type Phase = "idle" | "countdown" | "exercise";
 
 export const WorkoutTimer: React.FC = () => {
   const [started, setStarted] = useState(false);
   const [paused, setPaused] = useState(false);
   const [currentRound, setCurrentRound] = useState(1);
   const [currentExercise, setCurrentExercise] = useState(0);
+  const [phase, setPhase] = useState<Phase>("idle");
   const [timeLeft, setTimeLeft] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
-  const [showCountdown, setShowCountdown] = useState(false);
-  const [countdownNumber, setCountdownNumber] = useState(3);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const countdownRef = useRef<NodeJS.Timeout | null>(null);
   const beepSound = useRef<HTMLAudioElement>(new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg"));
 
   useEffect(() => {
-    if (started && !paused) {
-      startExercise();
-    }
-    return () => {
-      clearIntervalIfExist();
-    };
-  }, [started, paused]);
+    clearInterval(intervalRef.current!);
 
-  useEffect(() => {
-    if (started && !paused && timeLeft === 0) {
-      startExercise();
-    }
-  }, [timeLeft, started, paused]);
+    if (!started || paused) return;
 
-  const startExercise = () => {
-    if (currentExercise >= exercises.length) {
-      if (currentRound >= TOTAL_ROUNDS) {
-        // Workout is finished!
-        alert("🎉 Workout Completed! You beast!");
-        return;
-      } else {
-        // Move to next round and restart exercises
-        setCurrentRound((prev) => prev + 1);
-        setCurrentExercise(0);
-
-        // ⚡️ Important: Delay the call to start the next exercise!
-        setTimeout(() => {
-          startExercise();
-        }, 0);
-
-        return;
-      }
-    }
-
-    setShowCountdown(true);
-    setCountdownNumber(3);
-    countdownPhase();
-  };
-
-
-  const countdownPhase = () => {
-    clearIntervalIfExist();
-    countdownRef.current = setInterval(() => {
-      setCountdownNumber((prev) => {
-        if (prev <= 1) {
-          clearIntervalIfExist();
-          setShowCountdown(false);
-          realExerciseStart();
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-  };
-
-  const realExerciseStart = () => {
-    const ex = exercises[currentExercise];
-    setTimeLeft(ex.duration);
-    setTotalDuration(ex.duration);
     intervalRef.current = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (paused) return prev;
-        if (prev <= 1) {
-          clearIntervalIfExist();
-          setCurrentExercise((e) => e + 1);
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          handlePhaseCompletion();
           return 0;
         }
-        if (prev === 4) {
+        if (phase === "exercise" && prevTime === 4) {
           playBeep(3);
         }
-        return prev - 1;
+        return prevTime - 1;
       });
     }, 1000);
+
+    return () => clearInterval(intervalRef.current!);
+  }, [started, paused, phase, currentExercise, currentRound]);
+
+  const handlePhaseCompletion = () => {
+    if (phase === "countdown") {
+      const ex = exercises[currentExercise];
+      setPhase("exercise");
+      setTimeLeft(ex.duration);
+      setTotalDuration(ex.duration);
+    } else if (phase === "exercise") {
+      const nextExercise = currentExercise + 1;
+      if (nextExercise >= exercises.length) {
+        if (currentRound >= TOTAL_ROUNDS) {
+          alert("🏁 Workout Complete! You're unstoppable.");
+          resetWorkout();
+          return;
+        } else {
+          setCurrentRound((r) => r + 1);
+          setCurrentExercise(0);
+        }
+      } else {
+        setCurrentExercise(nextExercise);
+      }
+      setPhase("countdown");
+      setTimeLeft(3);
+      setTotalDuration(3);
+    }
+  };
+
+  const startWorkout = () => {
+    setStarted(true);
+    setPaused(false);
+    setCurrentRound(1);
+    setCurrentExercise(0);
+    setPhase("countdown");
+    setTimeLeft(3);
+    setTotalDuration(3);
+  };
+
+  const pauseOrResumeWorkout = () => setPaused((p) => !p);
+
+  const resetWorkout = () => {
+    clearInterval(intervalRef.current!);
+    setStarted(false);
+    setPaused(false);
+    setCurrentRound(1);
+    setCurrentExercise(0);
+    setPhase("idle");
+    setTimeLeft(0);
+    setTotalDuration(0);
   };
 
   const playBeep = (times: number) => {
@@ -161,52 +114,16 @@ export const WorkoutTimer: React.FC = () => {
     }
   };
 
-  const clearIntervalIfExist = () => {
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-      intervalRef.current = null;
-    }
-    if (countdownRef.current) {
-      clearInterval(countdownRef.current);
-      countdownRef.current = null;
-    }
-  };
-
-  const startWorkout = () => {
-    setStarted(true);
-    setPaused(false);
-    setCurrentRound(1);
-    setCurrentExercise(0);
-    setTimeLeft(0);
-    setTotalDuration(0);
-  };
-
-  const pauseOrResumeWorkout = () => {
-    setPaused((prev) => !prev);
-  };
-
-  const resetWorkout = () => {
-    clearIntervalIfExist();
-    setStarted(false);
-    setPaused(false);
-    setCurrentRound(1);
-    setCurrentExercise(0);
-    setTimeLeft(0);
-    setTotalDuration(0);
-    setShowCountdown(false);
-  };
-
   const formatTime = (seconds: number) => {
     const min = Math.floor(seconds / 60);
     const sec = seconds % 60;
     return `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
   };
 
-  const isRelaxPhase = exercises[currentExercise]?.name.toLowerCase().includes("relax");
+  const currentExerciseData = exercises[currentExercise];
+  const isRelaxPhase = currentExerciseData?.name.toLowerCase().includes("relax");
   const bgColor = isRelaxPhase ? "#004d00" : "#660000";
   const progressPercent = totalDuration ? (1 - timeLeft / totalDuration) * 100 : 0;
-  const currentExerciseName = exercises[currentExercise]?.name || "🏆 DONE!";
-  const mediaUrl = exercises[currentExercise]?.mediaUrl;
 
   return (
     <Box
@@ -224,25 +141,21 @@ export const WorkoutTimer: React.FC = () => {
     >
       <Typography variant="h3" gutterBottom>🔥 Cardio Workout Timer 🔥</Typography>
 
-      {showCountdown ? (
+      {phase === "countdown" ? (
         <Typography variant="h1" sx={{ fontSize: "10rem", animation: "pulse 1s infinite" }}>
-          {countdownNumber}
+          {timeLeft}
         </Typography>
       ) : (
         <>
-          <Typography variant="h4">{currentExerciseName}</Typography>
+          <Typography variant="h4">{currentExerciseData?.name || "🏆 DONE!"}</Typography>
 
           <Typography variant="h2" sx={{ my: 2 }}>
             {formatTime(timeLeft)}
           </Typography>
 
-          {mediaUrl && (
+          {currentExerciseData?.mediaUrl && (
             <Box sx={{ mb: 2 }}>
-              {mediaUrl.includes("youtube") ? (
-                <iframe width="300" height="200" src={mediaUrl} title="Exercise Video" allow="autoplay" />
-              ) : (
-                <img src={mediaUrl} alt="Exercise" width="300" height="200" style={{ borderRadius: 8 }} />
-              )}
+              <img src={currentExerciseData.mediaUrl} alt="Exercise" width="600" height="400" style={{ borderRadius: 8 }} />
             </Box>
           )}
 

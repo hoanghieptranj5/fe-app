@@ -182,7 +182,8 @@ const HanziContainer = () => {
       maxWidth="md"
       sx={{
         py: { xs: 4, md: 6 },
-        px: { xs: 2, sm: 3, md: 4 },
+        pl: { xs: 3, sm: 4, md: 4 },
+        pr: { xs: 6, sm: 6, md: 5 }, // a bit more on the right
       }}
     >
       <Stack spacing={4}>

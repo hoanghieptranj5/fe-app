@@ -18,8 +18,9 @@ import { useQuery } from "@tanstack/react-query";
 import { getRandomHanzi } from "../../services/HanziService";
 import { Flashcard, HanziCharacter } from "../../types/hanzi";
 import SchoolIcon from "@mui/icons-material/School";
-import { useNavigate } from "react-router-dom";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
+import { useNavigate } from "react-router-dom";
 
 // --- Helpers --------------------------------------------------
 
@@ -130,7 +131,7 @@ const HanziContainer = () => {
           pronunciations: pron,
         };
       }),
-    [data]
+    [data],
   );
 
   const handleGoToFlashcards = () => {
@@ -186,7 +187,7 @@ const HanziContainer = () => {
     >
       <Stack spacing={4}>
         {/* Header + Refresh */}
-        <Stack spacing={2} alignItems="center">
+        <Stack direction="row" spacing={2} mb={2} justifyContent="flex-end">
           <Typography
             variant="h3"
             align="center"
@@ -201,38 +202,39 @@ const HanziContainer = () => {
           >
             Chinese Characters of the Day
           </Typography>
-
-          <Button
-            variant="contained"
-            onClick={handleRefresh}
-            disabled={isFetching}
-            sx={{
-              borderRadius: 999,
-              px: 3,
-              py: 1,
-              fontWeight: 600,
-            }}
-          >
-            {isFetching ? (
-              <Stack direction="row" spacing={1} alignItems="center">
-                <CircularProgress size={18} />
-                <span>Refreshing...</span>
-              </Stack>
-            ) : (
-              "Refresh"
-            )}
-          </Button>
         </Stack>
-
-        <Stack direction="row" spacing={2} mb={2} justifyContent="flex-end">
-          <Button
-            variant="contained"
-            startIcon={<SchoolIcon />}
-            onClick={handleGoToFlashcards}
-            disabled={!flashcards.length}
-          >
-            Practice Flashcards
-          </Button>
+        <Stack spacing={2} alignItems="center" direction="row" justifyContent="center">
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item xs={6} sm={4} md={3}>
+              <Button
+                fullWidth
+                variant="contained"
+                startIcon={<RefreshIcon />}
+                onClick={handleRefresh}
+                disabled={isFetching}
+              >
+                {isFetching ? (
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <CircularProgress size={18} />
+                    <span>Refreshing...</span>
+                  </Stack>
+                ) : (
+                  "Refresh"
+                )}
+              </Button>
+            </Grid>
+            <Grid item xs={6} sm={4} md={3}>
+              <Button
+                fullWidth
+                variant="contained"
+                startIcon={<SchoolIcon />}
+                onClick={handleGoToFlashcards}
+                disabled={!flashcards.length}
+              >
+                Flashcards
+              </Button>
+            </Grid>
+          </Grid>
         </Stack>
 
         {/* Cards Grid */}

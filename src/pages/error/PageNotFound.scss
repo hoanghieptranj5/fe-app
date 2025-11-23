@@ -4,7 +4,7 @@
   align-items: center;
   height: 100vh;
   background: linear-gradient(135deg, #00c6ff, #0072ff);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   animation: backgroundAnimation 4s ease-in-out infinite;
 
   .content {
@@ -45,7 +45,9 @@
       border-radius: 50px;
       font-weight: bold;
       font-size: 16px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 
       &:hover {
         background: linear-gradient(135deg, #ff5f3e, #ff007f);

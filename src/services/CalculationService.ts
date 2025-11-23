@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const URL: string = process.env.REACT_APP_API_URL as string;
 
@@ -16,7 +16,10 @@ interface CalculationData {
   items: CalculatedItem[];
 }
 
-export const fetchCalculation = async (usage: number | string, token: string): Promise<CalculationData> => {
+export const fetchCalculation = async (
+  usage: number | string,
+  token: string,
+): Promise<CalculationData> => {
   try {
     const response = await axios.get(`${URL}/electricPrices/usage/${usage}`, {
       headers: {

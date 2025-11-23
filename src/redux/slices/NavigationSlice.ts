@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // define initial state type
 interface NavigationState {
@@ -7,18 +7,18 @@ interface NavigationState {
 
 // Initial State
 const initialState: NavigationState = {
-  currentPage: 'Home',
-}
+  currentPage: "Home",
+};
 
 export const navigationSlice = createSlice({
-  name: 'navigation',
+  name: "navigation",
   initialState,
   reducers: {
     setCurrentPage: (state, action: PayloadAction<string>) => {
       state.currentPage = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const {setCurrentPage} = navigationSlice.actions;
+export const { setCurrentPage } = navigationSlice.actions;
 export default navigationSlice.reducer;

@@ -8,16 +8,57 @@ interface Exercise {
 }
 
 const exercises: Exercise[] = [
-  { name: "High Knees", duration: 40, mediaUrl: "https://media1.popsugar-assets.com/files/thumbor/XiCmltZ1u3xHSs9UiJgTmzswHSs/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/06/29/850/n/1922729/a3a1ef261bffbc38_IMB_6Utd4M/i/High-Knees.GIF" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Jumping Jacks", duration: 40, mediaUrl: "https://media.giphy.com/media/QXg8kI7Mu4slyiO0Md/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Mountain Climbers", duration: 40, mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Squat to Jump", duration: 40, mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
-  { name: "Plank Shoulder Taps", duration: 40, mediaUrl: "https://media.giphy.com/media/CLjw2mHysNEYw/giphy.gif" },
-  { name: "Relax", duration: 20, mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif" },
+  {
+    name: "High Knees",
+    duration: 40,
+    mediaUrl:
+      "https://media1.popsugar-assets.com/files/thumbor/XiCmltZ1u3xHSs9UiJgTmzswHSs/fit-in/2048xorig/filters:format_auto-!!-:strip_icc-!!-/2020/06/29/850/n/1922729/a3a1ef261bffbc38_IMB_6Utd4M/i/High-Knees.GIF",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Jumping Jacks",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/QXg8kI7Mu4slyiO0Md/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Mountain Climbers",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/jsYmets3thkLhcvZ43/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Squat to Jump",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/J1daBNanDLbbMxfhgJ/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif",
+  },
+  {
+    name: "Plank Shoulder Taps",
+    duration: 40,
+    mediaUrl: "https://media.giphy.com/media/CLjw2mHysNEYw/giphy.gif",
+  },
+  {
+    name: "Relax",
+    duration: 20,
+    mediaUrl: "https://media.giphy.com/media/bDTtPo3HyEluE/giphy.gif",
+  },
 ];
 
 const TOTAL_ROUNDS = 3;
@@ -33,7 +74,9 @@ export const WorkoutTimer: React.FC = () => {
   const [totalDuration, setTotalDuration] = useState(0);
 
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const beepSound = useRef<HTMLAudioElement>(new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg"));
+  const beepSound = useRef<HTMLAudioElement>(
+    new Audio("https://actions.google.com/sounds/v1/alarms/beep_short.ogg"),
+  );
 
   useEffect(() => {
     clearInterval(intervalRef.current!);
@@ -139,7 +182,9 @@ export const WorkoutTimer: React.FC = () => {
         transition: "background 0.5s",
       }}
     >
-      <Typography variant="h3" gutterBottom>🔥 Cardio Workout Timer 🔥</Typography>
+      <Typography variant="h3" gutterBottom>
+        🔥 Cardio Workout Timer 🔥
+      </Typography>
 
       {phase === "countdown" ? (
         <Typography variant="h1" sx={{ fontSize: "10rem", animation: "pulse 1s infinite" }}>
@@ -155,14 +200,24 @@ export const WorkoutTimer: React.FC = () => {
 
           {currentExerciseData?.mediaUrl && (
             <Box sx={{ mb: 2 }}>
-              <img src={currentExerciseData.mediaUrl} alt="Exercise" width="600" height="400" style={{ borderRadius: 8 }} />
+              <img
+                src={currentExerciseData.mediaUrl}
+                alt="Exercise"
+                width="600"
+                height="400"
+                style={{ borderRadius: 8 }}
+              />
             </Box>
           )}
 
           <Typography>{started ? `Vòng ${currentRound} / ${TOTAL_ROUNDS}` : ""}</Typography>
 
           <Box sx={{ width: "80%", mt: 2 }}>
-            <LinearProgress variant="determinate" value={progressPercent} sx={{ height: 10, borderRadius: 5 }} />
+            <LinearProgress
+              variant="determinate"
+              value={progressPercent}
+              sx={{ height: 10, borderRadius: 5 }}
+            />
           </Box>
 
           <Box sx={{ mt: 3, display: "flex", gap: 2 }}>
@@ -172,7 +227,11 @@ export const WorkoutTimer: React.FC = () => {
               </Button>
             ) : (
               <>
-                <Button variant="contained" color={paused ? "info" : "warning"} onClick={pauseOrResumeWorkout}>
+                <Button
+                  variant="contained"
+                  color={paused ? "info" : "warning"}
+                  onClick={pauseOrResumeWorkout}
+                >
                   {paused ? "Resume" : "Pause"}
                 </Button>
                 <Button variant="contained" color="error" onClick={resetWorkout}>

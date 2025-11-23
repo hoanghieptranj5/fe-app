@@ -3,7 +3,7 @@ import { TextField, Button, Typography, Paper, Box } from "@mui/material";
 import { LockOutlined } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";  // Import useNavigate
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Login.scss"; // Import SCSS
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; // Fallback to avoid undefined API
@@ -39,8 +39,7 @@ const loginUser = async ({ username, password }: LoginCredentials): Promise<Logi
       throw new Error(response.data.value || "Login failed");
     }
   } catch (error: any) {
-    const errorMessage =
-      error.message || "Login failed";
+    const errorMessage = error.message || "Login failed";
     throw new Error(errorMessage);
   }
 };
@@ -49,13 +48,13 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigate = useNavigate();  // Use useNavigate hook
+  const navigate = useNavigate(); // Use useNavigate hook
 
   const mutation = useMutation<LoginResponse, Error, LoginCredentials>({
     mutationFn: (credentials: LoginCredentials) => loginUser(credentials),
     onSuccess: (response: LoginResponse) => {
       localStorage.setItem("token", response.token);
-      navigate("/");  // Navigate to homepage upon successful login
+      navigate("/"); // Navigate to homepage upon successful login
     },
     onError: (error: Error) => {
       console.error("Login failed:", error.message);

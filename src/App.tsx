@@ -31,7 +31,7 @@ const usePageNavigation = () => {
 
 const App: React.FC = () => {
   const currentPage = useSelector((state: RootState) => {
-    return state.navigation?.currentPage;  // Ensure you're checking for undefined state
+    return state.navigation?.currentPage; // Ensure you're checking for undefined state
   });
 
   usePageNavigation();

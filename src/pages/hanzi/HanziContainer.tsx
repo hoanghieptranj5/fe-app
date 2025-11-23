@@ -1,4 +1,4 @@
-import { useState, useCallback, Fragment } from "react";
+import { useState, useCallback } from "react";
 import {
   Box,
   Container,
@@ -13,7 +13,6 @@ import {
   DialogContent,
   DialogActions,
   Stack,
-  Chip,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomHanzi } from "../../services/HanziService";
@@ -41,11 +40,9 @@ const formatDescription = (description: string | null | undefined) => {
     return <Typography variant="body2">No description available.</Typography>;
   }
 
-  // Split at "1.", "2.", ... and remove empties
   const parts = description.split(/\d+\./).filter((p) => p.trim().length > 0);
 
   if (parts.length <= 1) {
-    // No real numbered structure, just render as paragraph
     return (
       <Typography variant="body2" sx={{ whiteSpace: "pre-line" }}>
         {description.trim()}
@@ -74,25 +71,21 @@ const fetchChineseCharacters = async (): Promise<HanziCharacter[]> => {
 
   const data = await getRandomHanzi(length, token);
 
-  return data.value.map((character: any): HanziCharacter => ({
-    character: character.id,
-    hanViet: character.hanViet,
-    pinyin: character.pinyin,
-    cantonese: character.cantonese,
-    description: character.meaningInVietnamese ?? null,
-  }));
+  return data.value.map(
+    (character: any): HanziCharacter => ({
+      character: character.id,
+      hanViet: character.hanViet,
+      pinyin: character.pinyin,
+      cantonese: character.cantonese,
+      description: character.meaningInVietnamese ?? null,
+    }),
+  );
 };
 
 // --- Main Component -------------------------------------------
 
 const HanziContainer = () => {
-  const {
-    data,
-    error,
-    isLoading,
-    isFetching,
-    refetch,
-  } = useQuery<HanziCharacter[], Error>({
+  const { data, error, isLoading, isFetching, refetch } = useQuery<HanziCharacter[], Error>({
     queryKey: ["chineseCharacters"],
     queryFn: fetchChineseCharacters,
     staleTime: 5 * 60 * 1000,
@@ -152,13 +145,31 @@ const HanziContainer = () => {
   // --- Main UI -----------------------------------------------
 
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
+    <Container
+      maxWidth="md"
+      sx={{
+        py: { xs: 4, md: 6 },
+        px: { xs: 2, sm: 3, md: 4 },
+      }}
+    >
       <Stack spacing={4}>
         {/* Header + Refresh */}
         <Stack spacing={2} alignItems="center">
-          <Typography variant="h3" align="center">
+          <Typography
+            variant="h3"
+            align="center"
+            sx={{
+              fontSize: {
+                xs: "1.8rem",
+                sm: "2.3rem",
+                md: "3rem",
+              },
+              lineHeight: 1.2,
+            }}
+          >
             Chinese Characters of the Day
           </Typography>
+
           <Button
             variant="contained"
             onClick={handleRefresh}
@@ -182,11 +193,10 @@ const HanziContainer = () => {
         </Stack>
 
         {/* Cards Grid */}
-        <Grid container spacing={3} justifyContent="center">
+        <Grid container spacing={{ xs: 2, sm: 3 }} justifyContent="center">
           {data?.map((character) => {
             const shortDescription = truncateDescription(character.description, 150);
-            const hasLongDescription =
-              (character.description?.length ?? 0) > 150;
+            const hasLongDescription = (character.description?.length ?? 0) > 150;
 
             return (
               <Grid
@@ -194,11 +204,16 @@ const HanziContainer = () => {
                 xs={12}
                 sm={6}
                 md={4}
-                lg={3}
                 key={character.character}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
               >
                 <Card
                   sx={{
+                    width: "100%",
+                    maxWidth: 420,
                     height: "100%",
                     display: "flex",
                     flexDirection: "column",
@@ -206,8 +221,8 @@ const HanziContainer = () => {
                     boxShadow: 3,
                     transition: "transform 0.15s ease, box-shadow 0.15s ease",
                     "&:hover": {
-                      transform: "translateY(-4px)",
-                      boxShadow: 6,
+                      transform: { md: "translateY(-4px)" },
+                      boxShadow: { md: 6 },
                     },
                   }}
                 >
@@ -219,6 +234,12 @@ const HanziContainer = () => {
                       sx={{
                         mb: 1,
                         fontFamily: '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
+                        fontSize: {
+                          xs: "2.5rem",
+                          sm: "3rem",
+                          md: "3.5rem",
+                        },
+                        lineHeight: 1.1,
                       }}
                     >
                       {character.character}
@@ -290,13 +311,11 @@ const HanziContainer = () => {
                 alignItems={{ xs: "flex-start", sm: "center" }}
                 justifyContent="space-between"
               >
-                {/* Big character */}
                 <Typography
                   variant="h2"
                   color="primary"
                   sx={{
-                    fontFamily:
-                      '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
+                    fontFamily: '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
                     lineHeight: 1,
                   }}
                 >
@@ -314,56 +333,76 @@ const HanziContainer = () => {
               }}
             >
               <Stack spacing={3}>
-                {/* Study-focused summary row */}
-                <Typography
-                  variant="h6"
-                  sx={{ mb: 1.5, fontWeight: 600 }}
-                >
-                  Pronunciations
-                </Typography>
-                <Box
-                  sx={{
-                    p: 2,
-                    borderRadius: 2,
-                    bgcolor: "background.default",
-                    border: "1px solid",
-                    borderColor: "divider",
-                  }}
-                >
-                  {/* Quick key info */}
-                  {/* Pronunciation Chips */}
-                  <Stack direction="row" spacing={1.5} flexWrap="wrap">
-                    <Chip
-                      label={`Pinyin: ${selectedCharacter.pinyin}`}
-                      variant="outlined"
-                      color="primary"
-                      sx={{ fontSize: "0.9rem", borderRadius: 2 }}
-                    />
-                    <Chip
-                      label={`Cantonese: ${selectedCharacter.cantonese}`}
-                      variant="outlined"
-                      color="secondary"
-                      sx={{ fontSize: "0.9rem", borderRadius: 2 }}
-                    />
-                    <Chip
-                      label={`Hán Việt: ${selectedCharacter.hanViet}`}
-                      variant="outlined"
-                      sx={{
-                        fontSize: "0.9rem",
-                        borderRadius: 2,
-                        borderColor: "text.secondary",
-                        color: "text.secondary",
-                      }}
-                    />
-                  </Stack>
+                {/* Pronunciations */}
+                <Box>
+                  <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600 }}>
+                    Pronunciations
+                  </Typography>
+
+                  <Box
+                    sx={{
+                      p: 2,
+                      borderRadius: 2,
+                      bgcolor: "background.default",
+                      border: "1px solid",
+                      borderColor: "divider",
+                    }}
+                  >
+                    <Stack spacing={1.5}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: 2,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
+                          Pinyin
+                        </Typography>
+                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
+                          {selectedCharacter.pinyin || "—"}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: 2,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
+                          Cantonese
+                        </Typography>
+                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
+                          {selectedCharacter.cantonese || "—"}
+                        </Typography>
+                      </Box>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: 2,
+                          flexWrap: "wrap",
+                        }}
+                      >
+                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
+                          Hán Việt
+                        </Typography>
+                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
+                          {selectedCharacter.hanViet || "—"}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </Box>
                 </Box>
 
-                {/* Meaning / description section */}
+                {/* Meaning */}
                 <Box>
-                  <Typography
-                    variant="h6"
-                    sx={{ mb: 1.5, fontWeight: 600 }}
-                  >
+                  <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600 }}>
                     Meaning & Notes
                   </Typography>
 
@@ -395,7 +434,6 @@ const HanziContainer = () => {
           </>
         )}
       </Dialog>
-
     </Container>
   );
 };

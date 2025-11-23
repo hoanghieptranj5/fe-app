@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Container,
   TextField,
@@ -8,7 +8,6 @@ import {
   ListItemText,
   IconButton,
   MenuItem,
-  Select,
   Typography,
   Stack,
   Paper,
@@ -20,6 +19,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Grid,
+  Divider,
+  Box,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import "./SharedMoneyCalculator.scss";
@@ -31,196 +33,391 @@ import {
   removeExpense,
 } from "../../redux/slices/peopleExpensesSlice";
 
+interface NewExpenseState {
+  payer: string; // we'll convert to number later
+  amount: string;
+  description: string;
+}
+
+const INITIAL_EXPENSE: NewExpenseState = {
+  payer: "",
+  amount: "",
+  description: "",
+};
+
 const SharedMoneyCalculator: React.FC = () => {
   const people = useAppSelector((state) => state.peopleExpenses.people);
   const expenses = useAppSelector((state) => state.peopleExpenses.expenses);
   const dispatch = useAppDispatch();
 
   const [newPerson, setNewPerson] = useState("");
-  const [newExpense, setNewExpense] = useState({ payer: "", amount: "", description: "" });
+  const [newExpense, setNewExpense] = useState<NewExpenseState>(INITIAL_EXPENSE);
   const [error, setError] = useState<string | null>(null);
 
-  const formatCurrency = (amount: number) => `${amount.toLocaleString("vi-VN")} ₫`;
+  const formatCurrency = (amount: number) =>
+    `${amount.toLocaleString("vi-VN", { maximumFractionDigits: 0 })} ₫`;
 
   const handleError = (message: string) => {
     setError(message);
-    setTimeout(() => setError(null), 3000);
   };
 
-  const addPersonHandler = () => {
-    if (!newPerson.trim()) return handleError("Person name cannot be empty");
-    dispatch(addPerson({ id: Date.now(), name: newPerson.trim() }));
+  const handleCloseSnackbar = () => {
+    setError(null);
+  };
+
+  const handleAddPerson = () => {
+    const trimmed = newPerson.trim();
+    if (!trimmed) {
+      return handleError("Person name cannot be empty.");
+    }
+
+    // Optional: prevent duplicate names
+    const exists = people.some((p: any) => p.name.toLowerCase() === trimmed.toLowerCase());
+    if (exists) {
+      return handleError("This person is already in the list.");
+    }
+
+    dispatch(addPerson({ id: Date.now(), name: trimmed }));
     setNewPerson("");
   };
 
-  const removePersonHandler = (id: number) => {
-    if (expenses.some((e) => e.payer === id)) return handleError("Cannot remove a person who has paid for an item.");
+  const handleRemovePerson = (id: number) => {
+    if (expenses.some((e: any) => e.payer === id)) {
+      return handleError("Cannot remove a person who has paid for an item.");
+    }
     dispatch(removePerson(id));
   };
 
-  const addExpenseHandler = () => {
+  const handleAddExpense = () => {
     if (!newExpense.payer || !newExpense.amount || !newExpense.description.trim()) {
-      return handleError("All expense fields must be filled out");
+      return handleError("All expense fields must be filled out.");
     }
+
+    const amountValue = Number(newExpense.amount);
+    if (Number.isNaN(amountValue) || amountValue <= 0) {
+      return handleError("Amount must be a positive number.");
+    }
+
     dispatch(
       addExpense({
         id: Date.now(),
         payer: Number(newExpense.payer),
-        amount: Number(newExpense.amount),
+        amount: amountValue,
         description: newExpense.description.trim(),
-      })
+      }),
     );
-    setNewExpense({ payer: "", amount: "", description: "" });
+
+    setNewExpense(INITIAL_EXPENSE);
   };
 
-  const removeExpenseHandler = (id: number) => {
+  const handleRemoveExpense = (id: number) => {
     dispatch(removeExpense(id));
   };
 
-  const calculateDebts = () => {
-    const total = expenses.reduce((sum, e) => sum + e.amount, 0);
-    const average = total / people.length;
-    const balances = new Map<number, number>(people.map((p) => [p.id, 0]));
-    expenses.forEach((e) => balances.set(e.payer, (balances.get(e.payer) || 0) + e.amount));
-    return { total, debts: people.map((p) => ({ name: p.name, balance: (balances.get(p.id) || 0) - average })) };
-  };
+  const { total, averagePerPerson, debts } = useMemo(() => {
+    if (people.length === 0) {
+      return { total: 0, averagePerPerson: 0, debts: [] as { name: string; balance: number }[] };
+    }
 
-  const { total, debts } = calculateDebts();
+    const totalAmount = expenses.reduce((sum: number, e: any) => sum + e.amount, 0);
+    const average = totalAmount / people.length;
+
+    const balances = new Map<number, number>(people.map((p: any) => [p.id, 0]));
+    expenses.forEach((e: any) => {
+      balances.set(e.payer, (balances.get(e.payer) || 0) + e.amount);
+    });
+
+    const debtsArray = people.map((p: any) => ({
+      name: p.name,
+      balance: (balances.get(p.id) || 0) - average,
+    }));
+
+    return {
+      total: totalAmount,
+      averagePerPerson: average,
+      debts: debtsArray,
+    };
+  }, [people, expenses]);
+
+  const hasData = people.length > 0 || expenses.length > 0;
 
   return (
-    <Container className="shared-money-calculator">
-      <Typography variant="h4" className="title">
-        Shared Money Calculator
-      </Typography>
-      <Snackbar open={!!error} autoHideDuration={3000}>
-        <Alert severity="error" sx={{ width: "100%" }}>
+    <Container maxWidth="lg" className="shared-money-calculator">
+      {/* HEADER */}
+      <Stack spacing={1} mb={3}>
+        <Typography variant="h4" className="title">
+          Shared Money Calculator
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Add people, record expenses, and see who should pay whom. Perfect for trips, parties, or
+          that one friend who keeps “forgetting” to pay. 😏
+        </Typography>
+      </Stack>
+
+      {/* ERROR SNACKBAR */}
+      <Snackbar
+        open={!!error}
+        autoHideDuration={3000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: "100%" }}>
           {error}
         </Alert>
       </Snackbar>
-      <Paper elevation={3} className="total-paper">
-        <Typography variant="h6">Total Money Spent: {formatCurrency(total)}</Typography>
+
+      {/* SUMMARY CARD */}
+      <Paper elevation={2} className="summary-paper">
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12} md={4}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Total Money Spent
+            </Typography>
+            <Typography variant="h5" fontWeight={600}>
+              {formatCurrency(total)}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Number of People
+            </Typography>
+            <Typography variant="h6">{people.length}</Typography>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Typography variant="subtitle2" color="text.secondary">
+              Average per Person
+            </Typography>
+            <Typography variant="h6">
+              {people.length > 0 ? formatCurrency(averagePerPerson) : "—"}
+            </Typography>
+          </Grid>
+        </Grid>
       </Paper>
 
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
-        <Paper elevation={3} className="paper">
-          <Typography variant="h6" className="paper-title">People</Typography>
-          <TextField
-            label="Name"
-            value={newPerson}
-            onChange={(e) => setNewPerson(e.target.value)}
-            fullWidth
-            margin="dense"
-          />
-          <Button onClick={addPersonHandler} variant="contained" className="add-button">
-            Add Person
-          </Button>
-          <List className="list">
-            {people.map((p) => (
-              <ListItem
-                key={p.id}
-                secondaryAction={
-                  <IconButton onClick={() => removePersonHandler(p.id)}>
-                    <Delete className="delete-icon" />
-                  </IconButton>
-                }
-              >
-                <ListItemText primary={p.name} />
-              </ListItem>
-            ))}
-          </List>
-        </Paper>
+      <Divider sx={{ my: 3 }} />
 
-        <Paper elevation={3} className="paper">
-          <Typography variant="h6" className="paper-title">Expenses</Typography>
-          <Select
-            value={newExpense.payer}
-            onChange={(e) => setNewExpense({ ...newExpense, payer: e.target.value })}
-            fullWidth
-            displayEmpty
-          >
-            <MenuItem value="" disabled>
-              Select Payer
-            </MenuItem>
-            {people.map((p) => (
-              <MenuItem key={p.id} value={p.id}>
-                {p.name}
-              </MenuItem>
-            ))}
-          </Select>
-          <TextField
-            type="number"
-            label="Amount"
-            value={newExpense.amount}
-            onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-            fullWidth
-            margin="dense"
-          />
-          <TextField
-            label="Description"
-            value={newExpense.description}
-            onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-            fullWidth
-            margin="dense"
-          />
-          <Button onClick={addExpenseHandler} variant="contained" className="add-button">
-            Add Expense
-          </Button>
-        </Paper>
+      <Grid container spacing={3}>
+        {/* LEFT COLUMN: People + Add Expense */}
+        <Grid item xs={12} md={5}>
+          <Stack spacing={2}>
+            {/* PEOPLE */}
+            <Paper elevation={2} className="paper">
+              <Typography variant="h6" className="paper-title">
+                People
+              </Typography>
+              <Stack direction="row" spacing={1} mt={1}>
+                <TextField
+                  label="Name"
+                  value={newPerson}
+                  onChange={(e) => setNewPerson(e.target.value)}
+                  fullWidth
+                  size="small"
+                />
+                <Button onClick={handleAddPerson} variant="contained" color="primary" size="small">
+                  Add
+                </Button>
+              </Stack>
 
-        <Paper elevation={3} className="paper">
-          <Typography variant="h6" className="paper-title">Items Paid</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Payer</TableCell>
-                  <TableCell>Description</TableCell>
-                  <TableCell>Amount</TableCell>
-                  <TableCell></TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {expenses.map((e) => (
-                  <TableRow key={e.id}>
-                    <TableCell>{people.find((p) => p.id === e.payer)?.name}</TableCell>
-                    <TableCell>{e.description}</TableCell>
-                    <TableCell>{formatCurrency(e.amount)}</TableCell>
-                    <TableCell>
-                      <IconButton onClick={() => removeExpenseHandler(e.id)}>
-                        <Delete className="delete-icon" />
+              <List dense className="list">
+                {people.length === 0 && (
+                  <Typography variant="body2" color="text.secondary" mt={2}>
+                    No people added yet. Start by adding your friends / roommates.
+                  </Typography>
+                )}
+                {people.map((p: any) => (
+                  <ListItem
+                    key={p.id}
+                    secondaryAction={
+                      <IconButton edge="end" onClick={() => handleRemovePerson(p.id)} size="small">
+                        <Delete className="delete-icon" fontSize="small" />
                       </IconButton>
-                    </TableCell>
-                  </TableRow>
+                    }
+                  >
+                    <ListItemText primary={p.name} />
+                  </ListItem>
                 ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
+              </List>
+            </Paper>
 
-        <Paper elevation={3} className="paper">
-          <Typography variant="h6" className="paper-title">Balance Sheet</Typography>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Balance</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {debts.map(({ name, balance }) => (
-                  <TableRow key={name}>
-                    <TableCell>{name}</TableCell>
-                    <TableCell>
-                      {balance >= 0 ? "Earned" : "Owes"} {formatCurrency(Math.abs(balance))}
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Stack>
+            {/* ADD EXPENSE */}
+            <Paper elevation={2} className="paper">
+              <Typography variant="h6" className="paper-title">
+                Add Expense
+              </Typography>
+
+              <Stack spacing={1.5} mt={1}>
+                <TextField
+                  select
+                  label="Payer"
+                  value={newExpense.payer}
+                  onChange={(e) => setNewExpense((prev) => ({ ...prev, payer: e.target.value }))}
+                  fullWidth
+                  size="small"
+                  disabled={people.length === 0}
+                  helperText={people.length === 0 ? "Add people first" : ""}
+                >
+                  <MenuItem value="" disabled>
+                    Select payer
+                  </MenuItem>
+                  {people.map((p: any) => (
+                    <MenuItem key={p.id} value={p.id}>
+                      {p.name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+
+                <TextField
+                  type="number"
+                  label="Amount"
+                  value={newExpense.amount}
+                  onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
+                  fullWidth
+                  size="small"
+                  inputProps={{ min: 0 }}
+                />
+
+                <TextField
+                  label="Description"
+                  value={newExpense.description}
+                  onChange={(e) =>
+                    setNewExpense((prev) => ({ ...prev, description: e.target.value }))
+                  }
+                  fullWidth
+                  size="small"
+                  placeholder="Dinner, taxi, tickets..."
+                />
+
+                <Box display="flex" justifyContent="flex-end">
+                  <Button onClick={handleAddExpense} variant="contained" size="small">
+                    Add Expense
+                  </Button>
+                </Box>
+              </Stack>
+            </Paper>
+          </Stack>
+        </Grid>
+
+        {/* RIGHT COLUMN: Items Paid + Balance Sheet */}
+        <Grid item xs={12} md={7}>
+          <Stack spacing={2}>
+            {/* ITEMS PAID */}
+            <Paper elevation={2} className="paper">
+              <Typography variant="h6" className="paper-title">
+                Items Paid
+              </Typography>
+              <TableContainer className="table-container">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Payer</TableCell>
+                      <TableCell>Description</TableCell>
+                      <TableCell align="right">Amount</TableCell>
+                      <TableCell align="center" width={48}></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {expenses.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={4}>
+                          <Typography variant="body2" color="text.secondary">
+                            No expenses added yet.
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                    {expenses.map((e: any) => (
+                      <TableRow key={e.id} hover>
+                        <TableCell>{people.find((p: any) => p.id === e.payer)?.name}</TableCell>
+                        <TableCell>{e.description}</TableCell>
+                        <TableCell align="right">{formatCurrency(e.amount)}</TableCell>
+                        <TableCell align="center">
+                          <IconButton
+                            onClick={() => handleRemoveExpense(e.id)}
+                            size="small"
+                            aria-label="delete-expense"
+                          >
+                            <Delete className="delete-icon" fontSize="small" />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+
+            {/* BALANCE SHEET */}
+            <Paper elevation={2} className="paper">
+              <Typography variant="h6" className="paper-title">
+                Balance Sheet
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mb={1}>
+                Positive = this person paid more than average (others owe them). Negative = this
+                person owes money to the group.
+              </Typography>
+
+              <TableContainer className="table-container">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell align="right">Balance</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {debts.length === 0 && (
+                      <TableRow>
+                        <TableCell colSpan={2}>
+                          <Typography variant="body2" color="text.secondary">
+                            Add people and expenses to see who owes what.
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                    {debts.map(({ name, balance }) => {
+                      const isPositive = balance > 0;
+                      const isZero = Math.abs(balance) < 1;
+
+                      return (
+                        <TableRow key={name}>
+                          <TableCell>{name}</TableCell>
+                          <TableCell align="right">
+                            {isZero ? (
+                              <Typography variant="body2" color="text.secondary">
+                                Settled up
+                              </Typography>
+                            ) : (
+                              <Typography
+                                variant="body2"
+                                sx={{
+                                  fontWeight: 600,
+                                  color: isPositive ? "success.main" : "error.main",
+                                }}
+                              >
+                                {isPositive ? "Should receive" : "Should pay"}{" "}
+                                {formatCurrency(Math.abs(balance))}
+                              </Typography>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Paper>
+          </Stack>
+        </Grid>
+      </Grid>
+
+      {!hasData && (
+        <Box mt={4} textAlign="center">
+          <Typography variant="body2" color="text.secondary">
+            Start by adding people on the left, then add expenses. The balance sheet will update
+            automatically.
+          </Typography>
+        </Box>
+      )}
     </Container>
   );
 };

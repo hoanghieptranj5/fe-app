@@ -37,13 +37,10 @@ const peopleExpensesSlice = createSlice({
       state.expenses.push(action.payload);
     },
     removeExpense: (state, action: PayloadAction<number>) => {
-      state.expenses = state.expenses.filter(
-        (expense) => expense.id !== action.payload
-      );
+      state.expenses = state.expenses.filter((expense) => expense.id !== action.payload);
     },
   },
 });
 
-export const { addPerson, removePerson, addExpense, removeExpense } =
-  peopleExpensesSlice.actions;
+export const { addPerson, removePerson, addExpense, removeExpense } = peopleExpensesSlice.actions;
 export default peopleExpensesSlice.reducer;

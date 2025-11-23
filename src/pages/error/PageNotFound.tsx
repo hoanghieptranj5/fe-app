@@ -2,7 +2,7 @@ import React from "react";
 import { Button, Typography, Box } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import { useNavigate } from "react-router-dom";
-import './PageNotFound.scss'; // Import SCSS styles
+import "./PageNotFound.scss"; // Import SCSS styles
 
 const PageNotFound: React.FC = () => {
   const navigate = useNavigate();

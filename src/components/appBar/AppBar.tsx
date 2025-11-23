@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, BottomNavigation, BottomNavigationAction, Button, Box, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  BottomNavigation,
+  BottomNavigationAction,
+  Button,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import CalculateIcon from "@mui/icons-material/Calculate";
 import InfoIcon from "@mui/icons-material/Info";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import TranslateIcon from '@mui/icons-material/Translate';
+import TranslateIcon from "@mui/icons-material/Translate";
 import { FitnessCenter } from "@mui/icons-material";
 
 const CustomAppBar: React.FC = () => {
@@ -24,7 +36,7 @@ const CustomAppBar: React.FC = () => {
 
   // Helper function to get the value based on path
   const getTabValue = (path: string) => {
-    const route = routes.find(route => route.path === path);
+    const route = routes.find((route) => route.path === path);
     return route ? routes.indexOf(route) : -1;
   };
 
@@ -58,7 +70,7 @@ const CustomAppBar: React.FC = () => {
   return (
     <div>
       <AppBar position="static">
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             Omni App
           </Typography>
@@ -100,9 +112,7 @@ const CustomAppBar: React.FC = () => {
       {/* Logout Confirmation Dialog */}
       <Dialog open={openDialog} onClose={handleLogoutCancel}>
         <DialogTitle>Confirm Log Out</DialogTitle>
-        <DialogContent>
-          Are you sure you want to log out?
-        </DialogContent>
+        <DialogContent>Are you sure you want to log out?</DialogContent>
         <DialogActions>
           <Button onClick={handleLogoutCancel} color="primary">
             Cancel

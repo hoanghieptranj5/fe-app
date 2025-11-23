@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
-import CalculatedTable from '../../components/calculatedTable/CalculatedTable';
+import React, { useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import CalculatedTable from "../../components/calculatedTable/CalculatedTable";
 import {
   Typography,
   Button,
@@ -12,30 +12,30 @@ import {
   Stack,
   Chip,
   Divider,
-} from '@mui/material';
+} from "@mui/material";
 
 const isLoggedIn: () => boolean = () => {
-  return localStorage.getItem('token') !== null;
+  return localStorage.getItem("token") !== null;
 };
 
 const Home: React.FC = () => {
-  const token = localStorage.getItem('token') || 'invalid_token';
+  const token = localStorage.getItem("token") || "invalid_token";
 
-  const [usage, setUsage] = useState<number | string>('');
-  const [submittedInput, setSubmittedInput] = useState<number | string>('');
-  const [error, setError] = useState<string>('');
+  const [usage, setUsage] = useState<number | string>("");
+  const [submittedInput, setSubmittedInput] = useState<number | string>("");
+  const [error, setError] = useState<string>("");
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleUsageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setUsage(value);
-    if (error) setError('');
+    if (error) setError("");
   };
 
   const handleSubmit = () => {
-    if (usage === '' || usage === null) {
-      setError('Please enter a usage value before calculating.');
+    if (usage === "" || usage === null) {
+      setError("Please enter a usage value before calculating.");
       return;
     }
     setSubmittedInput(usage);
@@ -48,14 +48,14 @@ const Home: React.FC = () => {
   };
 
   const handleKeyDown: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSubmit();
     }
   };
 
   const handleQuickSelect = (value: number) => {
     setUsage(value);
-    setError('');
+    setError("");
     // optional: auto-submit for quick presets
     setSubmittedInput(value);
   };
@@ -64,12 +64,11 @@ const Home: React.FC = () => {
     return (
       <Box
         sx={{
-          minHeight: '100vh',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          bgcolor: (theme) =>
-            theme.palette.mode === 'dark' ? 'background.default' : '#f3f4f6',
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: (theme) => (theme.palette.mode === "dark" ? "background.default" : "#f3f4f6"),
           px: 2,
         }}
       >
@@ -79,21 +78,16 @@ const Home: React.FC = () => {
             sx={{
               p: 4,
               borderRadius: 3,
-              textAlign: 'center',
+              textAlign: "center",
             }}
           >
             <Typography variant="h4" gutterBottom>
               You&apos;re not logged in
             </Typography>
-            <Typography
-              variant="body1"
-              color="text.secondary"
-              sx={{ mb: 3 }}
-            >
-              Log in to view and calculate your prices with the latest usage
-              data.
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              Log in to view and calculate your prices with the latest usage data.
             </Typography>
-            <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Link to="/login" style={{ textDecoration: "none" }}>
               <Button variant="contained" size="large" fullWidth>
                 Log In
               </Button>
@@ -107,11 +101,11 @@ const Home: React.FC = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh',
+        minHeight: "100vh",
         bgcolor: (theme) =>
-          theme.palette.mode === 'dark'
-            ? 'background.default'
-            : 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #f9fafb 100%)',
+          theme.palette.mode === "dark"
+            ? "background.default"
+            : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #f9fafb 100%)",
         py: 6,
         px: { xs: 2, sm: 3 },
       }}
@@ -123,8 +117,8 @@ const Home: React.FC = () => {
             Usage Price Calculator
           </Typography>
           <Typography variant="body1" color="text.secondary">
-            Enter your usage and instantly see the calculated prices. Adjust the
-            value to explore different scenarios.
+            Enter your usage and instantly see the calculated prices. Adjust the value to explore
+            different scenarios.
           </Typography>
         </Box>
 
@@ -135,10 +129,10 @@ const Home: React.FC = () => {
               elevation={4}
               sx={{
                 p: 3,
-                height: '100%',
+                height: "100%",
                 borderRadius: 3,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 gap: 2.5,
               }}
             >
@@ -164,7 +158,7 @@ const Home: React.FC = () => {
                   onFocus={handleFocus}
                   onKeyDown={handleKeyDown}
                   error={!!error}
-                  helperText={error || 'Example: 100, 250, 500'}
+                  helperText={error || "Example: 100, 250, 500"}
                 />
 
                 <Stack direction="row" spacing={1} flexWrap="wrap">
@@ -180,12 +174,7 @@ const Home: React.FC = () => {
                   ))}
                 </Stack>
 
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={handleSubmit}
-                  sx={{ mt: 1 }}
-                >
+                <Button variant="contained" size="large" onClick={handleSubmit} sx={{ mt: 1 }}>
                   Calculate
                 </Button>
               </Stack>
@@ -194,8 +183,7 @@ const Home: React.FC = () => {
 
               <Box>
                 <Typography variant="caption" color="text.secondary">
-                  Tip: You can press <b>Enter</b> inside the input to calculate
-                  faster.
+                  Tip: You can press <b>Enter</b> inside the input to calculate faster.
                 </Typography>
               </Box>
             </Paper>
@@ -208,18 +196,18 @@ const Home: React.FC = () => {
               sx={{
                 p: 3,
                 borderRadius: 3,
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
                 gap: 2,
               }}
             >
               <Box
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: { xs: 'flex-start', sm: 'center' },
-                  flexDirection: { xs: 'column', sm: 'row' },
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  flexDirection: { xs: "column", sm: "row" },
                   gap: 1,
                 }}
               >
@@ -237,8 +225,8 @@ const Home: React.FC = () => {
                       px: 1.5,
                       py: 0.5,
                       borderRadius: 999,
-                      border: '1px solid',
-                      borderColor: 'divider',
+                      border: "1px solid",
+                      borderColor: "divider",
                     }}
                   >
                     Current usage:&nbsp;
@@ -250,22 +238,22 @@ const Home: React.FC = () => {
               <Divider />
 
               <Box sx={{ flexGrow: 1, minHeight: 200 }}>
-                {submittedInput && token !== 'invalid_token' ? (
+                {submittedInput && token !== "invalid_token" ? (
                   <CalculatedTable inputUsage={submittedInput} token={token} />
                 ) : (
                   <Box
                     sx={{
-                      height: '100%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      textAlign: 'center',
+                      height: "100%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      textAlign: "center",
                       px: 2,
                     }}
                   >
                     <Typography variant="body1" color="text.secondary">
-                      Enter a usage value on the left and click{' '}
-                      <b>Calculate</b> to see your price breakdown here.
+                      Enter a usage value on the left and click <b>Calculate</b> to see your price
+                      breakdown here.
                     </Typography>
                   </Box>
                 )}

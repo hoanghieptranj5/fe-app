@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const URL = process.env.REACT_APP_API_URL;
 
@@ -14,7 +14,10 @@ interface GetRandomHanziResponse {
 }
 
 // ✅ Updated function using axios
-export const getRandomHanzi = async (length: number, token: string): Promise<GetRandomHanziResponse> => {
+export const getRandomHanzi = async (
+  length: number,
+  token: string,
+): Promise<GetRandomHanziResponse> => {
   try {
     const response = await axios.get<GetRandomHanziResponse>(`${URL}/hanzi/random/${length}`, {
       headers: {

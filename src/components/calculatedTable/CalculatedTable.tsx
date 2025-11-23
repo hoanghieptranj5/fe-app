@@ -1,5 +1,5 @@
-import React from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   Paper,
   Table,
@@ -16,9 +16,9 @@ import {
   Stack,
   Divider,
   Chip,
-} from '@mui/material';
-import { NumericFormat } from 'react-number-format';
-import { fetchCalculation } from '../../services/CalculationService';
+} from "@mui/material";
+import { NumericFormat } from "react-number-format";
+import { fetchCalculation } from "../../services/CalculationService";
 
 // ---- Types ----
 interface CalculatedItem {
@@ -58,19 +58,13 @@ const CurrencyText: React.FC<{ value: number }> = ({ value }) => {
 };
 
 const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) => {
-  const queryKey = ['calculation', inputUsage, token];
+  const queryKey = ["calculation", inputUsage, token];
   const queryFn = () => fetchCalculation(inputUsage, token);
 
-  const {
-    data,
-    isLoading,
-    error,
-    refetch,
-    isFetching,
-  } = useQuery<CalculationData, Error>({
+  const { data, isLoading, error, refetch, isFetching } = useQuery<CalculationData, Error>({
     queryKey,
     queryFn,
-    enabled: !!inputUsage && token !== 'invalid_token',
+    enabled: !!inputUsage && token !== "invalid_token",
   });
 
   // --- Loading state (inline, not full screen) ---
@@ -79,9 +73,9 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
       <Box
         sx={{
           minHeight: 220,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         <Stack spacing={1} alignItems="center">
@@ -102,10 +96,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
           p: 3,
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.error.light}`,
-          bgcolor: (theme) =>
-            theme.palette.mode === 'dark'
-              ? 'background.paper'
-              : '#fff5f5',
+          bgcolor: (theme) => (theme.palette.mode === "dark" ? "background.paper" : "#fff5f5"),
         }}
         elevation={0}
       >
@@ -132,10 +123,10 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
       <Box
         sx={{
           minHeight: 200,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
           px: 2,
         }}
       >
@@ -157,9 +148,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.divider}`,
           bgcolor: (theme) =>
-            theme.palette.mode === 'dark'
-              ? 'background.paper'
-              : 'rgba(249, 250, 251, 0.9)',
+            theme.palette.mode === "dark" ? "background.paper" : "rgba(249, 250, 251, 0.9)",
         }}
       >
         <Grid container spacing={2} alignItems="center">
@@ -174,7 +163,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
               <Chip
                 size="small"
                 label={`Usage: ${inputUsage || 0}`}
-                sx={{ mt: 0.5, alignSelf: 'flex-start' }}
+                sx={{ mt: 0.5, alignSelf: "flex-start" }}
               />
             </Stack>
           </Grid>
@@ -213,7 +202,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
         component={Paper}
         sx={{
           borderRadius: 3,
-          overflow: 'hidden',
+          overflow: "hidden",
           border: (theme) => `1px solid ${theme.palette.divider}`,
         }}
         elevation={0}
@@ -223,14 +212,12 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
             <TableRow
               sx={{
                 bgcolor: (theme) =>
-                  theme.palette.mode === 'dark'
-                    ? 'background.paper'
-                    : 'grey.100',
-                '& th': {
+                  theme.palette.mode === "dark" ? "background.paper" : "grey.100",
+                "& th": {
                   fontWeight: 600,
                   fontSize: 12,
-                  textTransform: 'uppercase',
-                  color: 'text.secondary',
+                  textTransform: "uppercase",
+                  color: "text.secondary",
                 },
               }}
             >
@@ -246,19 +233,15 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
               <TableRow
                 key={index}
                 sx={{
-                  '&:nth-of-type(odd)': {
+                  "&:nth-of-type(odd)": {
                     bgcolor: (theme) =>
-                      theme.palette.mode === 'dark'
-                        ? 'background.default'
-                        : 'grey.50',
+                      theme.palette.mode === "dark" ? "background.default" : "grey.50",
                   },
-                  '&:hover': {
+                  "&:hover": {
                     bgcolor: (theme) =>
-                      theme.palette.mode === 'dark'
-                        ? 'action.hover'
-                        : 'grey.100',
+                      theme.palette.mode === "dark" ? "action.hover" : "grey.100",
                   },
-                  transition: 'background-color 0.15s ease',
+                  transition: "background-color 0.15s ease",
                 }}
               >
                 <TableCell>{item.from}</TableCell>

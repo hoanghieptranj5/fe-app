@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
   Box,
   Container,
@@ -16,16 +16,10 @@ import {
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomHanzi } from "../../services/HanziService";
+import { Flashcard, HanziCharacter } from "../../types/hanzi";
+import SchoolIcon from "@mui/icons-material/School";
+import { useNavigate } from "react-router-dom";
 
-// --- Types ----------------------------------------------------
-
-interface HanziCharacter {
-  character: string;
-  hanViet: string;
-  pinyin: string;
-  cantonese: string;
-  description: string | null;
-}
 
 // --- Helpers --------------------------------------------------
 
@@ -105,6 +99,44 @@ const HanziContainer = () => {
   const handleRefresh = useCallback(() => {
     refetch();
   }, [refetch]);
+
+  // -- Flashcard navigation -----------------------------------
+  const navigate = useNavigate();
+
+  // 👉 map currently displayed hanzi to flashcard payload
+  const flashcards: Flashcard[] = useMemo(
+    () =>
+      (data ?? []).map((h: HanziCharacter) => {
+        const pron: string[] = [];
+
+        if (h.pinyin) {
+          const pArr = Array.isArray(h.pinyin) ? h.pinyin : [h.pinyin];
+          pron.push(`Pinyin: ${pArr.join(", ")}`);
+        }
+
+        if (h.hanViet) {
+          const hvArr = Array.isArray(h.hanViet) ? h.hanViet : [h.hanViet];
+          pron.push(`Hán Việt: ${hvArr.join(", ")}`);
+        }
+
+        if (h.cantonese) {
+          const cArr = Array.isArray(h.cantonese) ? h.cantonese : [h.cantonese];
+          pron.push(`Cantonese: ${cArr.join(", ")}`);
+        }
+
+        return {
+          id: h.character,
+          hanzi: h.character, // or h.character / h.word etc.
+          pronunciations: pron,
+        };
+      }),
+    [data]
+  );
+
+  const handleGoToFlashcards = () => {
+    if (!flashcards.length) return;
+    navigate("/flashcards", { state: { flashcards } });
+  };
 
   // --- Loading State -----------------------------------------
 
@@ -189,6 +221,17 @@ const HanziContainer = () => {
             ) : (
               "Refresh"
             )}
+          </Button>
+        </Stack>
+
+        <Stack direction="row" spacing={2} mb={2} justifyContent="flex-end">
+          <Button
+            variant="contained"
+            startIcon={<SchoolIcon />}
+            onClick={handleGoToFlashcards}
+            disabled={!flashcards.length}
+          >
+            Practice Flashcards
           </Button>
         </Stack>
 

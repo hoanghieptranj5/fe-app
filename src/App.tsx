@@ -16,6 +16,7 @@ import { RootState } from "./redux/store";
 import CustomAppBar from "./components/appBar/AppBar";
 import HanziContainer from "./pages/hanzi/HanziContainer";
 import { WorkoutTimer } from "./pages/exercise/WorkoutTimer";
+import FlashCardsView from "./pages/hanzi/FlashCardsView";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App: React.FC = () => {
             <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
             <Route path="/shared" element={<PrivateRoute element={<SharedMoney />} />} />
             <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
+            <Route path="/flashcards" element={<FlashCardsView />} />
             <Route path="/workout" element={<PrivateRoute element={<WorkoutTimer />} />} />
           </Routes>
         </Router>

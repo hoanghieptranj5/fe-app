@@ -203,39 +203,37 @@ const HanziContainer = () => {
             Chinese Characters of the Day
           </Typography>
         </Stack>
-        <Stack spacing={2} alignItems="center" direction="row" justifyContent="center">
-          <Grid container spacing={2} justifyContent="center">
-            <Grid item xs={6} sm={4} md={3}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<RefreshIcon />}
-                onClick={handleRefresh}
-                disabled={isFetching}
-              >
-                {isFetching ? (
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <CircularProgress size={18} />
-                    <span>Refreshing...</span>
-                  </Stack>
-                ) : (
-                  "Refresh"
-                )}
-              </Button>
-            </Grid>
-            <Grid item xs={6} sm={4} md={3}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<SchoolIcon />}
-                onClick={handleGoToFlashcards}
-                disabled={!flashcards.length}
-              >
-                Flashcards
-              </Button>
-            </Grid>
+        <Grid container spacing={2} justifyContent="center">
+          <Grid item xs={12} sm={4} md={3}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              disabled={isFetching}
+            >
+              {isFetching ? (
+                <Stack direction="row" spacing={1} alignItems="center">
+                  <CircularProgress size={18} />
+                  <span>Refreshing...</span>
+                </Stack>
+              ) : (
+                "Refresh"
+              )}
+            </Button>
           </Grid>
-        </Stack>
+          <Grid item xs={12} sm={4} md={3}>
+            <Button
+              fullWidth
+              variant="contained"
+              startIcon={<SchoolIcon />}
+              onClick={handleGoToFlashcards}
+              disabled={!flashcards.length}
+            >
+              Flashcards
+            </Button>
+          </Grid>
+        </Grid>
 
         {/* Cards Grid */}
         <Grid container spacing={{ xs: 2, sm: 3 }} justifyContent="center">

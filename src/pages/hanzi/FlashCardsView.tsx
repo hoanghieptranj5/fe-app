@@ -1,13 +1,6 @@
 // src/pages/FlashCardsView.tsx
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  CardContent,
-  Chip,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, CardContent, Chip, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Flashcard } from "../../types/hanzi";
@@ -169,12 +162,7 @@ const FlashCardsView: React.FC = () => {
                 Pronunciations
               </Typography>
 
-              <Stack
-                direction="row"
-                spacing={1}
-                justifyContent="center"
-                flexWrap="wrap"
-              >
+              <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap">
                 {current.pronunciations.map((p, idx) => (
                   <Chip
                     key={idx}

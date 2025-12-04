@@ -10,7 +10,6 @@ import {
   MenuItem,
   Typography,
   Stack,
-  Paper,
   Snackbar,
   Alert,
   Table,
@@ -23,8 +22,9 @@ import {
   Divider,
   Box,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { Delete } from "@mui/icons-material";
-import "./SharedMoneyCalculator.scss";
+// import "./SharedMoneyCalculator.scss"; // ❌ not needed with glassy layout
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import {
   addPerson,
@@ -32,9 +32,10 @@ import {
   addExpense,
   removeExpense,
 } from "../../redux/slices/peopleExpensesSlice";
+import { GlassyCard } from "../../components/glassyCard/GlassyCard";
 
 interface NewExpenseState {
-  payer: string; // we'll convert to number later
+  payer: string;
   amount: string;
   description: string;
 }
@@ -44,6 +45,43 @@ const INITIAL_EXPENSE: NewExpenseState = {
   amount: "",
   description: "",
 };
+
+// ------ styled ------------------------------------------------
+
+const Page = styled(Container)(({ theme }) => ({
+  maxWidth: "1120px",
+  paddingTop: theme.spacing(5),
+  paddingBottom: theme.spacing(7),
+}));
+
+const SectionCard = styled(GlassyCard)(({ theme }) => ({
+  padding: theme.spacing(2.5),
+  borderRadius: 24,
+}));
+
+const SummaryCard = styled(GlassyCard)(({ theme }) => ({
+  padding: theme.spacing(2.5),
+  borderRadius: 24,
+}));
+
+const GlassyTableContainer = styled(TableContainer)(({ theme }) => ({
+  marginTop: theme.spacing(1.5),
+  borderRadius: 18,
+  overflow: "hidden",
+  background: "rgba(15,23,42,0.9)",
+  border: "1px solid rgba(51,65,85,0.9)",
+  boxShadow: "0 18px 45px rgba(15,23,42,0.9)",
+}));
+
+const TableHeaderCell = styled(TableCell)(() => ({
+  fontSize: 12,
+  fontWeight: 600,
+  textTransform: "uppercase",
+  letterSpacing: 0.08,
+  color: "rgba(226,232,240,0.9)",
+}));
+
+// ------ component ---------------------------------------------
 
 const SharedMoneyCalculator: React.FC = () => {
   const people = useAppSelector((state) => state.peopleExpenses.people);
@@ -71,7 +109,6 @@ const SharedMoneyCalculator: React.FC = () => {
       return handleError("Person name cannot be empty.");
     }
 
-    // Optional: prevent duplicate names
     const exists = people.some((p: any) => p.name.toLowerCase() === trimmed.toLowerCase());
     if (exists) {
       return handleError("This person is already in the list.");
@@ -116,7 +153,11 @@ const SharedMoneyCalculator: React.FC = () => {
 
   const { total, averagePerPerson, debts } = useMemo(() => {
     if (people.length === 0) {
-      return { total: 0, averagePerPerson: 0, debts: [] as { name: string; balance: number }[] };
+      return {
+        total: 0,
+        averagePerPerson: 0,
+        debts: [] as { name: string; balance: number }[],
+      };
     }
 
     const totalAmount = expenses.reduce((sum: number, e: any) => sum + e.amount, 0);
@@ -142,10 +183,10 @@ const SharedMoneyCalculator: React.FC = () => {
   const hasData = people.length > 0 || expenses.length > 0;
 
   return (
-    <Container maxWidth="lg" className="shared-money-calculator">
+    <Page className="shared-money-calculator">
       {/* HEADER */}
       <Stack spacing={1} mb={3}>
-        <Typography variant="h4" className="title">
+        <Typography variant="h4" sx={{ fontWeight: 600 }}>
           Shared Money Calculator
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -167,8 +208,8 @@ const SharedMoneyCalculator: React.FC = () => {
       </Snackbar>
 
       {/* SUMMARY CARD */}
-      <Paper elevation={2} className="summary-paper">
-        <Grid container spacing={2} alignItems="center">
+      <SummaryCard sx={{ mb: 3 }}>
+        <Grid container spacing={3} alignItems="center">
           <Grid item xs={12} md={4}>
             <Typography variant="subtitle2" color="text.secondary">
               Total Money Spent
@@ -192,17 +233,17 @@ const SharedMoneyCalculator: React.FC = () => {
             </Typography>
           </Grid>
         </Grid>
-      </Paper>
+      </SummaryCard>
 
-      <Divider sx={{ my: 3 }} />
+      <Divider sx={{ my: 3, borderColor: "rgba(30,64,175,0.6)" }} />
 
       <Grid container spacing={3}>
         {/* LEFT COLUMN: People + Add Expense */}
         <Grid item xs={12} md={5}>
           <Stack spacing={2}>
             {/* PEOPLE */}
-            <Paper elevation={2} className="paper">
-              <Typography variant="h6" className="paper-title">
+            <SectionCard>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                 People
               </Typography>
               <Stack direction="row" spacing={1} mt={1}>
@@ -218,7 +259,7 @@ const SharedMoneyCalculator: React.FC = () => {
                 </Button>
               </Stack>
 
-              <List dense className="list">
+              <List dense sx={{ mt: 1 }}>
                 {people.length === 0 && (
                   <Typography variant="body2" color="text.secondary" mt={2}>
                     No people added yet. Start by adding your friends / roommates.
@@ -229,7 +270,7 @@ const SharedMoneyCalculator: React.FC = () => {
                     key={p.id}
                     secondaryAction={
                       <IconButton edge="end" onClick={() => handleRemovePerson(p.id)} size="small">
-                        <Delete className="delete-icon" fontSize="small" />
+                        <Delete fontSize="small" />
                       </IconButton>
                     }
                   >
@@ -237,11 +278,11 @@ const SharedMoneyCalculator: React.FC = () => {
                   </ListItem>
                 ))}
               </List>
-            </Paper>
+            </SectionCard>
 
             {/* ADD EXPENSE */}
-            <Paper elevation={2} className="paper">
-              <Typography variant="h6" className="paper-title">
+            <SectionCard>
+              <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                 Add Expense
               </Typography>
 
@@ -250,11 +291,16 @@ const SharedMoneyCalculator: React.FC = () => {
                   select
                   label="Payer"
                   value={newExpense.payer}
-                  onChange={(e) => setNewExpense((prev) => ({ ...prev, payer: e.target.value }))}
+                  onChange={(e) =>
+                    setNewExpense((prev) => ({
+                      ...prev,
+                      payer: e.target.value,
+                    }))
+                  }
                   fullWidth
                   size="small"
                   disabled={people.length === 0}
-                  helperText={people.length === 0 ? "Add people first" : ""}
+                  helperText={people.length === 0 ? "Add people first" : undefined}
                 >
                   <MenuItem value="" disabled>
                     Select payer
@@ -270,7 +316,12 @@ const SharedMoneyCalculator: React.FC = () => {
                   type="number"
                   label="Amount"
                   value={newExpense.amount}
-                  onChange={(e) => setNewExpense((prev) => ({ ...prev, amount: e.target.value }))}
+                  onChange={(e) =>
+                    setNewExpense((prev) => ({
+                      ...prev,
+                      amount: e.target.value,
+                    }))
+                  }
                   fullWidth
                   size="small"
                   inputProps={{ min: 0 }}
@@ -280,7 +331,10 @@ const SharedMoneyCalculator: React.FC = () => {
                   label="Description"
                   value={newExpense.description}
                   onChange={(e) =>
-                    setNewExpense((prev) => ({ ...prev, description: e.target.value }))
+                    setNewExpense((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
                   }
                   fullWidth
                   size="small"
@@ -293,7 +347,7 @@ const SharedMoneyCalculator: React.FC = () => {
                   </Button>
                 </Box>
               </Stack>
-            </Paper>
+            </SectionCard>
           </Stack>
         </Grid>
 
@@ -301,18 +355,18 @@ const SharedMoneyCalculator: React.FC = () => {
         <Grid item xs={12} md={7}>
           <Stack spacing={2}>
             {/* ITEMS PAID */}
-            <Paper elevation={2} className="paper">
-              <Typography variant="h6" className="paper-title">
+            <SectionCard>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
                 Items Paid
               </Typography>
-              <TableContainer className="table-container">
+              <GlassyTableContainer>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Payer</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell align="right">Amount</TableCell>
-                      <TableCell align="center" width={48}></TableCell>
+                      <TableHeaderCell>Payer</TableHeaderCell>
+                      <TableHeaderCell>Description</TableHeaderCell>
+                      <TableHeaderCell align="right">Amount</TableHeaderCell>
+                      <TableHeaderCell align="center" width={48}></TableHeaderCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -336,19 +390,19 @@ const SharedMoneyCalculator: React.FC = () => {
                             size="small"
                             aria-label="delete-expense"
                           >
-                            <Delete className="delete-icon" fontSize="small" />
+                            <Delete fontSize="small" />
                           </IconButton>
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
-              </TableContainer>
-            </Paper>
+              </GlassyTableContainer>
+            </SectionCard>
 
             {/* BALANCE SHEET */}
-            <Paper elevation={2} className="paper">
-              <Typography variant="h6" className="paper-title">
+            <SectionCard>
+              <Typography variant="h6" sx={{ fontWeight: 600 }}>
                 Balance Sheet
               </Typography>
               <Typography variant="body2" color="text.secondary" mb={1}>
@@ -356,12 +410,12 @@ const SharedMoneyCalculator: React.FC = () => {
                 person owes money to the group.
               </Typography>
 
-              <TableContainer className="table-container">
+              <GlassyTableContainer>
                 <Table size="small">
                   <TableHead>
                     <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell align="right">Balance</TableCell>
+                      <TableHeaderCell>Name</TableHeaderCell>
+                      <TableHeaderCell align="right">Balance</TableHeaderCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -404,8 +458,8 @@ const SharedMoneyCalculator: React.FC = () => {
                     })}
                   </TableBody>
                 </Table>
-              </TableContainer>
-            </Paper>
+              </GlassyTableContainer>
+            </SectionCard>
           </Stack>
         </Grid>
       </Grid>
@@ -418,7 +472,7 @@ const SharedMoneyCalculator: React.FC = () => {
           </Typography>
         </Box>
       )}
-    </Container>
+    </Page>
   );
 };
 

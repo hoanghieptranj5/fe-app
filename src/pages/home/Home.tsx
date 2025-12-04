@@ -64,10 +64,9 @@ const Home: React.FC = () => {
     return (
       <Box
         sx={{
-          minHeight: '100vh',
+          minHeight: "100vh",
           p: { xs: 2, md: 4 },
-          background:
-            'radial-gradient(circle at top left, #1e293b 0, #020617 42%, #000 100%)',
+          background: "radial-gradient(circle at top left, #1e293b 0, #020617 42%, #000 100%)",
         }}
       >
         <Container maxWidth="sm">

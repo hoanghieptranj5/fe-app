@@ -3,7 +3,6 @@ import {
   Box,
   Container,
   Grid,
-  Card,
   CardContent,
   Typography,
   CircularProgress,
@@ -21,6 +20,7 @@ import { Flashcard, HanziCharacter } from "../../types/hanzi";
 import SchoolIcon from "@mui/icons-material/School";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useNavigate } from "react-router-dom";
+import { GlassyCard } from "../../components/glassyCard/GlassyCard";
 
 // --- Helpers --------------------------------------------------
 
@@ -77,7 +77,7 @@ const fetchChineseCharacters = async (): Promise<HanziCharacter[]> => {
   );
 };
 
-// --- Styled for glassy dialog -------------------------------
+// --- Styled for cards & dialog -------------------------------
 
 const PronunciationPanel = styled(Box)(({ theme }) => ({
   borderRadius: 20,
@@ -117,6 +117,22 @@ const PronValue = styled(Typography)(() => ({
   fontWeight: 500,
   color: "rgba(248,250,252,0.98)",
   textAlign: "right",
+}));
+
+// Glassy wrapper for each Hanzi card, consistent with other pages
+const HanziCard = styled(GlassyCard)(({ theme }) => ({
+  width: "100%",
+  maxWidth: 420,
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
+  borderRadius: 24,
+  padding: theme.spacing(2.5),
+  transition: "transform 0.18s ease-out, box-shadow 0.18s ease-out",
+  "&:hover": {
+    transform: "translateY(-4px)",
+    boxShadow: "0 26px 70px rgba(15,23,42,0.95)",
+  },
 }));
 
 // --- Main Component -------------------------------------------
@@ -307,23 +323,7 @@ const HanziContainer = () => {
                   justifyContent: "center",
                 }}
               >
-                <Card
-                  sx={{
-                    width: "100%",
-                    maxWidth: 420,
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                    borderRadius: 3,
-                    boxShadow: 3,
-                    transition:
-                      "transform 0.15s ease, box-shadow 0.15s ease",
-                    "&:hover": {
-                      transform: { md: "translateY(-4px)" },
-                      boxShadow: { md: 6 },
-                    },
-                  }}
-                >
+                <HanziCard>
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography
                       variant="h2"
@@ -385,7 +385,7 @@ const HanziContainer = () => {
                       </Button>
                     </Box>
                   )}
-                </Card>
+                </HanziCard>
               </Grid>
             );
           })}
@@ -505,7 +505,7 @@ const HanziContainer = () => {
                   <Box
                     sx={{
                       p: 2.25,
-                      borderRadius: 18,
+                      borderRadius: 1,
                       background: "rgba(15,23,42,0.92)",
                       border: "1px solid rgba(51,65,85,0.9)",
                       boxShadow: "0 18px 50px rgba(15,23,42,0.9)",

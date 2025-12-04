@@ -44,19 +44,19 @@ const App: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={darkGlassTheme}>
           <CssBaseline />
-        <Router>
-          <CustomAppBar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
-            <Route path="/shared" element={<PrivateRoute element={<SharedMoney />} />} />
-            <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
-            <Route path="/flashcards" element={<FlashCardsView />} />
-            <Route path="/workout" element={<PrivateRoute element={<WorkoutTimer />} />} />
-          </Routes>
-        </Router>
+          <Router>
+            <CustomAppBar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/about" element={<About />} />
+              <Route path="*" element={<PageNotFound />} /> {/* Catch-all for undefined routes */}
+              <Route path="/shared" element={<PrivateRoute element={<SharedMoney />} />} />
+              <Route path="/hanzi" element={<PrivateRoute element={<HanziContainer />} />} />
+              <Route path="/flashcards" element={<FlashCardsView />} />
+              <Route path="/workout" element={<PrivateRoute element={<WorkoutTimer />} />} />
+            </Routes>
+          </Router>
         </ThemeProvider>
       </QueryClientProvider>
     </Provider>

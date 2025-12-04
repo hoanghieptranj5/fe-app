@@ -99,10 +99,7 @@ const GlassyBottomNavAction = styled(BottomNavigationAction)(({ theme }) => ({
   minWidth: 0,
   paddingTop: 6,
   paddingBottom: 4,
-  color:
-    theme.palette.mode === "dark"
-      ? "rgba(148,163,184,0.9)"
-      : theme.palette.text.secondary,
+  color: theme.palette.mode === "dark" ? "rgba(148,163,184,0.9)" : theme.palette.text.secondary,
   "& .MuiSvgIcon-root": {
     fontSize: 22,
   },
@@ -112,19 +109,14 @@ const GlassyBottomNavAction = styled(BottomNavigationAction)(({ theme }) => ({
     transition: "all 120ms ease-out",
   },
   "&.Mui-selected": {
-    color:
-      theme.palette.mode === "dark"
-        ? theme.palette.primary.light
-        : theme.palette.primary.main,
+    color: theme.palette.mode === "dark" ? theme.palette.primary.light : theme.palette.primary.main,
     "& .MuiBottomNavigationAction-label": {
       fontSize: 11,
     },
   },
 }));
 
-const CustomAppBar: React.FC<{ children?: React.ReactNode }> = ({
-  children,
-}) => {
+const CustomAppBar: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const [value, setValue] = useState<number>(0);
@@ -194,11 +186,7 @@ const CustomAppBar: React.FC<{ children?: React.ReactNode }> = ({
           }}
         >
           {routes.map((route) => (
-            <GlassyBottomNavAction
-              key={route.path}
-              label={route.label}
-              icon={route.icon}
-            />
+            <GlassyBottomNavAction key={route.path} label={route.label} icon={route.icon} />
           ))}
         </GlassyBottomNav>
       </GlassyBottomNavContainer>

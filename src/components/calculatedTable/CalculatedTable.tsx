@@ -15,12 +15,7 @@ import {
 } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { fetchCalculation } from "../../services/CalculationService";
-import {
-  GlassyTableContainer,
-  HeaderCell,
-  BodyRow,
-  BodyCell,
-} from "../glassyTable/GlassyTable";
+import { GlassyTableContainer, HeaderCell, BodyRow, BodyCell } from "../glassyTable/GlassyTable";
 
 // ---- Types ----
 interface CalculatedItem {
@@ -59,17 +54,11 @@ const CurrencyText: React.FC<{ value: number }> = ({ value }) => {
   );
 };
 
-const CalculatedTable: React.FC<CalculatedTableProps> = ({
-  inputUsage,
-  token,
-}) => {
+const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) => {
   const queryKey = ["calculation", inputUsage, token];
   const queryFn = () => fetchCalculation(inputUsage, token);
 
-  const { data, isLoading, error, refetch, isFetching } = useQuery<
-    CalculationData,
-    Error
-  >({
+  const { data, isLoading, error, refetch, isFetching } = useQuery<CalculationData, Error>({
     queryKey,
     queryFn,
     enabled: !!inputUsage && token !== "invalid_token",
@@ -104,8 +93,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({
           p: 3,
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.error.light}`,
-          bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "background.paper" : "#fff5f5",
+          bgcolor: (theme) => (theme.palette.mode === "dark" ? "background.paper" : "#fff5f5"),
         }}
         elevation={0}
       >
@@ -157,9 +145,7 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.divider}`,
           bgcolor: (theme) =>
-            theme.palette.mode === "dark"
-              ? "background.paper"
-              : "rgba(249, 250, 251, 0.9)",
+            theme.palette.mode === "dark" ? "background.paper" : "rgba(249, 250, 251, 0.9)",
         }}
       >
         <Grid container spacing={2} alignItems="center">

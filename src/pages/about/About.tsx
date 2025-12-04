@@ -94,18 +94,14 @@ const GlassyPage = styled(Box)(({ theme }) => ({
     theme.palette.mode === "dark"
       ? "radial-gradient(circle at top left, #1e293b 0, #020617 40%, #000 100%)"
       : "linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #f9fafb 100%)",
-  color:
-    theme.palette.mode === "dark"
-      ? "rgba(248,250,252,0.96)"
-      : theme.palette.text.primary,
+  color: theme.palette.mode === "dark" ? "rgba(248,250,252,0.96)" : theme.palette.text.primary,
   [theme.breakpoints.down("sm")]: {
     padding: theme.spacing(2),
   },
 }));
 
 const GlassyAvatar = styled(Avatar)(() => ({
-  background:
-    "linear-gradient(135deg, rgba(59,130,246,0.95), rgba(56,189,248,0.9))",
+  background: "linear-gradient(135deg, rgba(59,130,246,0.95), rgba(56,189,248,0.9))",
   color: "#0b1120",
   fontWeight: 700,
 }));
@@ -156,8 +152,7 @@ const ActionsRow = styled(CardActions)(({ theme }) => ({
 // ==================== Component ====================
 const About: React.FC = () => {
   const handleLike = (postId: string) => console.log(`Liked post ${postId}`);
-  const handleComment = (postId: string) =>
-    console.log(`Comment on post ${postId}`);
+  const handleComment = (postId: string) => console.log(`Comment on post ${postId}`);
   const handleShare = (postId: string) => console.log(`Shared post ${postId}`);
 
   return (
@@ -185,9 +180,7 @@ const About: React.FC = () => {
                 variant: "caption",
                 sx: { color: "rgba(148,163,184,0.95)" },
               }}
-              title={`${post.authorName}${
-                post.authorHandle ? ` (${post.authorHandle})` : ""
-              }`}
+              title={`${post.authorName}${post.authorHandle ? ` (${post.authorHandle})` : ""}`}
               subheader={post.timestamp}
               sx={{
                 paddingX: 0,
@@ -201,9 +194,7 @@ const About: React.FC = () => {
               <VideoWrapper>
                 <iframe
                   src={`https://www.youtube.com/embed/${post.youtubeVideoId}`}
-                  title={
-                    post.sectionTitle || post.authorName || "YouTube video player"
-                  }
+                  title={post.sectionTitle || post.authorName || "YouTube video player"}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
                   allowFullScreen
@@ -221,15 +212,9 @@ const About: React.FC = () => {
             ) : null}
 
             {/* Content */}
-            <CardContent
-              sx={{ paddingX: 0, paddingTop: 1.5, paddingBottom: 1 }}
-            >
+            <CardContent sx={{ paddingX: 0, paddingTop: 1.5, paddingBottom: 1 }}>
               {post.sectionTitle && (
-                <Typography
-                  variant="h6"
-                  component="h2"
-                  sx={{ mb: 0.75, fontWeight: 600 }}
-                >
+                <Typography variant="h6" component="h2" sx={{ mb: 0.75, fontWeight: 600 }}>
                   {post.sectionTitle}
                 </Typography>
               )}
@@ -248,10 +233,7 @@ const About: React.FC = () => {
 
             {/* Actions */}
             <ActionsRow disableSpacing>
-              <IconButton
-                aria-label="like post"
-                onClick={() => handleLike(post.id)}
-              >
+              <IconButton aria-label="like post" onClick={() => handleLike(post.id)}>
                 <ThumbUpAltOutlinedIcon fontSize="small" />
                 {post.likeCount !== undefined && (
                   <Typography
@@ -263,10 +245,7 @@ const About: React.FC = () => {
                 )}
               </IconButton>
 
-              <IconButton
-                aria-label="comment on post"
-                onClick={() => handleComment(post.id)}
-              >
+              <IconButton aria-label="comment on post" onClick={() => handleComment(post.id)}>
                 <ChatBubbleOutlineOutlinedIcon fontSize="small" />
                 {post.commentCount !== undefined && (
                   <Typography

@@ -7,12 +7,12 @@ import {
   Box,
   Grid,
   TextField,
-  Paper,
   Container,
   Stack,
   Chip,
   Divider,
 } from "@mui/material";
+import { GlassyCard } from "../../components/glassyCard/GlassyCard";
 
 const isLoggedIn: () => boolean = () => {
   return localStorage.getItem("token") !== null;
@@ -64,16 +64,14 @@ const Home: React.FC = () => {
     return (
       <Box
         sx={{
-          minHeight: "100vh",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          bgcolor: (theme) => (theme.palette.mode === "dark" ? "background.default" : "#f3f4f6"),
-          px: 2,
+          minHeight: '100vh',
+          p: { xs: 2, md: 4 },
+          background:
+            'radial-gradient(circle at top left, #1e293b 0, #020617 42%, #000 100%)',
         }}
       >
         <Container maxWidth="sm">
-          <Paper
+          <GlassyCard
             elevation={4}
             sx={{
               p: 4,
@@ -92,7 +90,7 @@ const Home: React.FC = () => {
                 Log In
               </Button>
             </Link>
-          </Paper>
+          </GlassyCard>
         </Container>
       </Box>
     );
@@ -125,7 +123,7 @@ const Home: React.FC = () => {
         <Grid container spacing={4} alignItems="stretch">
           {/* Input Panel */}
           <Grid item xs={12} md={4}>
-            <Paper
+            <GlassyCard
               elevation={4}
               sx={{
                 p: 3,
@@ -186,12 +184,12 @@ const Home: React.FC = () => {
                   Tip: You can press <b>Enter</b> inside the input to calculate faster.
                 </Typography>
               </Box>
-            </Paper>
+            </GlassyCard>
           </Grid>
 
           {/* Results Panel */}
           <Grid item xs={12} md={8}>
-            <Paper
+            <GlassyCard
               elevation={4}
               sx={{
                 p: 3,
@@ -258,7 +256,7 @@ const Home: React.FC = () => {
                   </Box>
                 )}
               </Box>
-            </Paper>
+            </GlassyCard>
           </Grid>
         </Grid>
       </Container>

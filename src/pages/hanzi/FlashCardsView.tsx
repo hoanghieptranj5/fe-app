@@ -1,12 +1,74 @@
 // src/pages/FlashCardsView.tsx
 import React, { useState } from "react";
-import { Box, Button, Card, CardContent, Chip, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CardContent,
+  Chip,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useLocation, useNavigate } from "react-router-dom";
 import type { Flashcard } from "../../types/hanzi";
+import { GlassyCard } from "../../components/glassyCard/GlassyCard";
 
 interface LocationState {
   flashcards?: Flashcard[];
 }
+
+// ===== styled =====
+
+const Page = styled(Box)(({ theme }) => ({
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: theme.spacing(4),
+  paddingTop: theme.spacing(8),
+  paddingBottom: theme.spacing(10),
+  background:
+    theme.palette.mode === "dark"
+      ? "radial-gradient(circle at top left, #1e293b 0, #020617 42%, #000 100%)"
+      : "linear-gradient(135deg, #f5f7fa, #e6efff)",
+}));
+
+const FlipWrapper = styled(Box)(({ theme }) => ({
+  perspective: 1000,
+  marginBottom: theme.spacing(3),
+}));
+
+const FlipInner = styled(Box)<{ $flipped: boolean }>(({ $flipped }) => ({
+  position: "relative",
+  width: 420,
+  maxWidth: "80vw",
+  height: 280,
+  transformStyle: "preserve-3d",
+  transition: "transform 0.6s",
+  transform: $flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+  cursor: "pointer",
+}));
+
+const FlipFace = styled(GlassyCard)(() => ({
+  position: "absolute",
+  inset: 0,
+  backfaceVisibility: "hidden",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  borderRadius: 24,
+}));
+
+const FlipBackFace = styled(FlipFace)(() => ({
+  transform: "rotateY(180deg)",
+}));
+
+const HintText = styled(Typography)(() => ({
+  opacity: 0.65,
+  marginTop: 8,
+}));
+
+// ===== component =====
 
 const FlashCardsView: React.FC = () => {
   const navigate = useNavigate();
@@ -19,25 +81,19 @@ const FlashCardsView: React.FC = () => {
 
   if (!flashcards.length) {
     return (
-      <Box
-        p={3}
-        minHeight="100vh"
-        display="flex"
-        flexDirection="column"
-        justifyContent="center"
-        alignItems="center"
-        bgcolor="#f8f9fa"
-      >
-        <Typography variant="h5" gutterBottom>
-          No flashcards loaded
-        </Typography>
-        <Typography variant="body2" mb={2}>
-          Go back to the Hanzi list and start flashcard practice from there.
-        </Typography>
-        <Button variant="outlined" onClick={() => navigate("/")}>
-          Back to Hanzi List
-        </Button>
-      </Box>
+      <Page>
+        <GlassyCard sx={{ maxWidth: 480, width: "100%", textAlign: "center", py: 4 }}>
+          <Typography variant="h5" gutterBottom>
+            No flashcards loaded
+          </Typography>
+          <Typography variant="body2" sx={{ mb: 2, opacity: 0.8 }}>
+            Go back to the Hanzi list and start flashcard practice from there.
+          </Typography>
+          <Button variant="outlined" onClick={() => navigate("/hanzi")}>
+            Back to Hanzi List
+          </Button>
+        </GlassyCard>
+      </Page>
     );
   }
 
@@ -56,16 +112,8 @@ const FlashCardsView: React.FC = () => {
   };
 
   return (
-    <Box
-      p={4}
-      minHeight="100vh"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      sx={{
-        background: "linear-gradient(135deg, #f5f7fa, #e6efff)",
-      }}
-    >
+    <Page>
+      {/* Header row */}
       <Stack
         direction="row"
         spacing={2}
@@ -73,77 +121,40 @@ const FlashCardsView: React.FC = () => {
         maxWidth={600}
         mb={3}
         justifyContent="space-between"
+        alignItems="center"
       >
-        <Button variant="outlined" onClick={() => navigate(-1)}>
+        <Button variant="outlined" size="small" onClick={() => navigate(-1)}>
           Back
         </Button>
-        <Typography variant="h6">
+        <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
           Flashcards: {index + 1} / {flashcards.length}
         </Typography>
       </Stack>
 
       {/* Flip wrapper */}
-      <Box
-        sx={{
-          perspective: 1000,
-          mb: 3,
-        }}
-        onClick={handleFlip}
-      >
-        <Box
-          sx={{
-            position: "relative",
-            width: 420,
-            height: 280,
-            transformStyle: "preserve-3d",
-            transition: "transform 0.6s",
-            transform: showBack ? "rotateY(180deg)" : "rotateY(0deg)",
-            cursor: "pointer",
-          }}
-        >
+      <FlipWrapper onClick={handleFlip}>
+        <FlipInner $flipped={showBack}>
           {/* FRONT */}
-          <Card
-            sx={{
-              position: "absolute",
-              inset: 0,
-              backfaceVisibility: "hidden",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 4,
-              boxShadow: "0px 4px 16px rgba(0,0,0,0.15)",
-              background: "white",
-            }}
-          >
+          <FlipFace>
             <CardContent sx={{ textAlign: "center" }}>
               <Typography
                 variant="h1"
                 sx={{
-                  fontSize: 100,
+                  fontSize: 104,
                   fontFamily: `"Kaiti SC","STKaiti","KaiTi","DFKai-SB","Noto Serif SC","Noto Serif CJK SC","serif"`,
-                  color: "#1f2937",
+                  letterSpacing: 2,
+                  color: "rgba(191,219,254,0.98)",
+                  textShadow: "0 0 32px rgba(59,130,246,0.9)",
                 }}
               >
                 {current.hanzi}
               </Typography>
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                Click to flip
-              </Typography>
+              <HintText variant="caption">Tap to flip</HintText>
             </CardContent>
-          </Card>
+          </FlipFace>
 
           {/* BACK */}
-          <Card
-            sx={{
-              position: "absolute",
-              inset: 0,
-              backfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-              borderRadius: 4,
-              boxShadow: "0px 4px 16px rgba(0,0,0,0.15)",
-              background: "#ffffff",
-            }}
-          >
+          <FlipBackFace>
             <CardContent
               sx={{
                 textAlign: "center",
@@ -154,13 +165,28 @@ const FlashCardsView: React.FC = () => {
                 gap: 2,
               }}
             >
-              <Typography variant="subtitle1" color="primary">
+              <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                 Pronunciations
               </Typography>
 
-              <Stack direction="row" spacing={1} justifyContent="center" flexWrap="wrap">
+              <Stack
+                direction="row"
+                spacing={1}
+                justifyContent="center"
+                flexWrap="wrap"
+              >
                 {current.pronunciations.map((p, idx) => (
-                  <Chip key={idx} label={p} variant="outlined" />
+                  <Chip
+                    key={idx}
+                    label={p}
+                    size="small"
+                    variant="outlined"
+                    sx={{
+                      borderRadius: 999,
+                      borderColor: "rgba(148,163,184,0.7)",
+                      color: "rgba(226,232,240,0.95)",
+                    }}
+                  />
                 ))}
               </Stack>
 
@@ -170,14 +196,13 @@ const FlashCardsView: React.FC = () => {
                 </Typography>
               )}
 
-              <Typography variant="caption" sx={{ opacity: 0.7 }}>
-                Click to flip back
-              </Typography>
+              <HintText variant="caption">Tap to flip back</HintText>
             </CardContent>
-          </Card>
-        </Box>
-      </Box>
+          </FlipBackFace>
+        </FlipInner>
+      </FlipWrapper>
 
+      {/* Controls */}
       <Stack direction="row" spacing={2} mt={1}>
         <Button onClick={handlePrev} variant="outlined">
           Previous
@@ -186,7 +211,7 @@ const FlashCardsView: React.FC = () => {
           Next
         </Button>
       </Stack>
-    </Box>
+    </Page>
   );
 };
 

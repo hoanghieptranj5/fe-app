@@ -1,24 +1,26 @@
 import React from "react";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Paper,
   Table,
   TableHead,
-  TableRow,
-  TableCell,
   TableBody,
   CircularProgress,
   Typography,
   Grid,
   Box,
-  TableContainer,
   Button,
   Stack,
-  Divider,
   Chip,
+  Paper,
 } from "@mui/material";
 import { NumericFormat } from "react-number-format";
 import { fetchCalculation } from "../../services/CalculationService";
+import {
+  GlassyTableContainer,
+  HeaderCell,
+  BodyRow,
+  BodyCell,
+} from "../glassyTable/GlassyTable";
 
 // ---- Types ----
 interface CalculatedItem {
@@ -57,11 +59,17 @@ const CurrencyText: React.FC<{ value: number }> = ({ value }) => {
   );
 };
 
-const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) => {
+const CalculatedTable: React.FC<CalculatedTableProps> = ({
+  inputUsage,
+  token,
+}) => {
   const queryKey = ["calculation", inputUsage, token];
   const queryFn = () => fetchCalculation(inputUsage, token);
 
-  const { data, isLoading, error, refetch, isFetching } = useQuery<CalculationData, Error>({
+  const { data, isLoading, error, refetch, isFetching } = useQuery<
+    CalculationData,
+    Error
+  >({
     queryKey,
     queryFn,
     enabled: !!inputUsage && token !== "invalid_token",
@@ -96,7 +104,8 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
           p: 3,
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.error.light}`,
-          bgcolor: (theme) => (theme.palette.mode === "dark" ? "background.paper" : "#fff5f5"),
+          bgcolor: (theme) =>
+            theme.palette.mode === "dark" ? "background.paper" : "#fff5f5",
         }}
         elevation={0}
       >
@@ -148,7 +157,9 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
           borderRadius: 3,
           border: (theme) => `1px solid ${theme.palette.divider}`,
           bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "background.paper" : "rgba(249, 250, 251, 0.9)",
+            theme.palette.mode === "dark"
+              ? "background.paper"
+              : "rgba(249, 250, 251, 0.9)",
         }}
       >
         <Grid container spacing={2} alignItems="center">
@@ -195,69 +206,35 @@ const CalculatedTable: React.FC<CalculatedTableProps> = ({ inputUsage, token }) 
         </Grid>
       </Paper>
 
-      <Divider />
-
       {/* Detail table */}
-      <TableContainer
-        component={Paper}
-        sx={{
-          borderRadius: 3,
-          overflow: "hidden",
-          border: (theme) => `1px solid ${theme.palette.divider}`,
-        }}
-        elevation={0}
-      >
+      <GlassyTableContainer>
         <Table size="small" aria-label="calculated price table">
           <TableHead>
-            <TableRow
-              sx={{
-                bgcolor: (theme) =>
-                  theme.palette.mode === "dark" ? "background.paper" : "grey.100",
-                "& th": {
-                  fontWeight: 600,
-                  fontSize: 12,
-                  textTransform: "uppercase",
-                  color: "text.secondary",
-                },
-              }}
-            >
-              <TableCell>Range (From)</TableCell>
-              <TableCell>Range (To)</TableCell>
-              <TableCell align="right">Standard Price</TableCell>
-              <TableCell align="right">Usage</TableCell>
-              <TableCell align="right">Sub Total</TableCell>
-            </TableRow>
+            <BodyRow>
+              <HeaderCell>Range (From)</HeaderCell>
+              <HeaderCell>Range (To)</HeaderCell>
+              <HeaderCell align="right">Standard Price</HeaderCell>
+              <HeaderCell align="right">Usage</HeaderCell>
+              <HeaderCell align="right">Sub Total</HeaderCell>
+            </BodyRow>
           </TableHead>
           <TableBody>
             {data.items.map((item, index) => (
-              <TableRow
-                key={index}
-                sx={{
-                  "&:nth-of-type(odd)": {
-                    bgcolor: (theme) =>
-                      theme.palette.mode === "dark" ? "background.default" : "grey.50",
-                  },
-                  "&:hover": {
-                    bgcolor: (theme) =>
-                      theme.palette.mode === "dark" ? "action.hover" : "grey.100",
-                  },
-                  transition: "background-color 0.15s ease",
-                }}
-              >
-                <TableCell>{item.from}</TableCell>
-                <TableCell>{item.to}</TableCell>
-                <TableCell align="right">
+              <BodyRow key={index}>
+                <BodyCell>{item.from}</BodyCell>
+                <BodyCell>{item.to}</BodyCell>
+                <BodyCell align="right">
                   <CurrencyText value={item.standardPrice} />
-                </TableCell>
-                <TableCell align="right">{item.usage}</TableCell>
-                <TableCell align="right">
+                </BodyCell>
+                <BodyCell align="right">{item.usage}</BodyCell>
+                <BodyCell align="right">
                   <CurrencyText value={item.price} />
-                </TableCell>
-              </TableRow>
+                </BodyCell>
+              </BodyRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
+      </GlassyTableContainer>
 
       <Box sx={{ mt: 0.5 }}>
         <Typography variant="caption" color="text.secondary">

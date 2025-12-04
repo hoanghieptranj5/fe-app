@@ -11,6 +11,8 @@ import PageNotFound from "./pages/error/PageNotFound";
 import PrivateRoute from "./components/privateRoutes/PrivateRoute"; // Import PrivateRoute
 
 import "./App.scss";
+import { ThemeProvider, CssBaseline } from "@mui/material";
+import { darkGlassTheme } from "./theme/darkMode";
 import { setCurrentPage } from "./redux/slices/NavigationSlice";
 import { RootState } from "./redux/store";
 import CustomAppBar from "./components/appBar/AppBar";
@@ -40,6 +42,8 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={darkGlassTheme}>
+          <CssBaseline />
         <Router>
           <CustomAppBar />
           <Routes>
@@ -53,6 +57,7 @@ const App: React.FC = () => {
             <Route path="/workout" element={<PrivateRoute element={<WorkoutTimer />} />} />
           </Routes>
         </Router>
+        </ThemeProvider>
       </QueryClientProvider>
     </Provider>
   );

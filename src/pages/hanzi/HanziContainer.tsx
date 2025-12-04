@@ -14,12 +14,12 @@ import {
   DialogActions,
   Stack,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useQuery } from "@tanstack/react-query";
 import { getRandomHanzi } from "../../services/HanziService";
 import { Flashcard, HanziCharacter } from "../../types/hanzi";
 import SchoolIcon from "@mui/icons-material/School";
 import RefreshIcon from "@mui/icons-material/Refresh";
-
 import { useNavigate } from "react-router-dom";
 
 // --- Helpers --------------------------------------------------
@@ -77,17 +77,63 @@ const fetchChineseCharacters = async (): Promise<HanziCharacter[]> => {
   );
 };
 
+// --- Styled for glassy dialog -------------------------------
+
+const PronunciationPanel = styled(Box)(({ theme }) => ({
+  borderRadius: 20,
+  padding: theme.spacing(2.25),
+  marginBottom: theme.spacing(2.5),
+  background:
+    theme.palette.mode === "dark"
+      ? "linear-gradient(135deg, rgba(15,23,42,1), rgba(15,23,42,0.92))"
+      : "linear-gradient(135deg, rgba(241,245,249,1), rgba(226,232,240,0.96))",
+  boxShadow:
+    theme.palette.mode === "dark"
+      ? "0 20px 50px rgba(15,23,42,0.9)"
+      : "0 14px 32px rgba(15,23,42,0.25)",
+  border:
+    theme.palette.mode === "dark"
+      ? "1px solid rgba(51,65,85,0.95)"
+      : "1px solid rgba(148,163,184,0.9)",
+  display: "grid",
+  gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1.4fr)",
+  columnGap: theme.spacing(3),
+  rowGap: theme.spacing(1.5),
+  [theme.breakpoints.down("sm")]: {
+    gridTemplateColumns: "1fr",
+  },
+}));
+
+const PronLabel = styled(Typography)(() => ({
+  fontSize: 13,
+  fontWeight: 600,
+  textTransform: "uppercase",
+  letterSpacing: 0.08,
+  color: "rgba(148,163,184,0.95)",
+}));
+
+const PronValue = styled(Typography)(() => ({
+  fontSize: 15,
+  fontWeight: 500,
+  color: "rgba(248,250,252,0.98)",
+  textAlign: "right",
+}));
+
 // --- Main Component -------------------------------------------
 
 const HanziContainer = () => {
-  const { data, error, isLoading, isFetching, refetch } = useQuery<HanziCharacter[], Error>({
+  const { data, error, isLoading, isFetching, refetch } = useQuery<
+    HanziCharacter[],
+    Error
+  >({
     queryKey: ["chineseCharacters"],
     queryFn: fetchChineseCharacters,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 
-  const [selectedCharacter, setSelectedCharacter] = useState<HanziCharacter | null>(null);
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<HanziCharacter | null>(null);
 
   const handleOpenDialog = useCallback((character: HanziCharacter) => {
     setSelectedCharacter(character);
@@ -104,7 +150,6 @@ const HanziContainer = () => {
   // -- Flashcard navigation -----------------------------------
   const navigate = useNavigate();
 
-  // 👉 map currently displayed hanzi to flashcard payload
   const flashcards: Flashcard[] = useMemo(
     () =>
       (data ?? []).map((h: HanziCharacter) => {
@@ -121,13 +166,15 @@ const HanziContainer = () => {
         }
 
         if (h.cantonese) {
-          const cArr = Array.isArray(h.cantonese) ? h.cantonese : [h.cantonese];
+          const cArr = Array.isArray(h.cantonese)
+            ? h.cantonese
+            : [h.cantonese];
           pron.push(`Cantonese: ${cArr.join(", ")}`);
         }
 
         return {
           id: h.character,
-          hanzi: h.character, // or h.character / h.word etc.
+          hanzi: h.character,
           pronunciations: pron,
         };
       }),
@@ -183,11 +230,11 @@ const HanziContainer = () => {
       sx={{
         py: { xs: 4, md: 6 },
         pl: { xs: 3, sm: 4, md: 4 },
-        pr: { xs: 6, sm: 6, md: 5 }, // a bit more on the right
+        pr: { xs: 6, sm: 6, md: 5 },
       }}
     >
       <Stack spacing={4}>
-        {/* Header + Refresh */}
+        {/* Header */}
         <Stack direction="row" spacing={2} mb={2} justifyContent="flex-end">
           <Typography
             variant="h3"
@@ -204,6 +251,8 @@ const HanziContainer = () => {
             Chinese Characters of the Day
           </Typography>
         </Stack>
+
+        {/* Actions */}
         <Grid container spacing={2} justifyContent="center">
           <Grid item xs={12} sm={4} md={3}>
             <Button
@@ -239,8 +288,12 @@ const HanziContainer = () => {
         {/* Cards Grid */}
         <Grid container spacing={{ xs: 2, sm: 3 }} justifyContent="center">
           {data?.map((character) => {
-            const shortDescription = truncateDescription(character.description, 150);
-            const hasLongDescription = (character.description?.length ?? 0) > 150;
+            const shortDescription = truncateDescription(
+              character.description,
+              150,
+            );
+            const hasLongDescription =
+              (character.description?.length ?? 0) > 150;
 
             return (
               <Grid
@@ -263,7 +316,8 @@ const HanziContainer = () => {
                     flexDirection: "column",
                     borderRadius: 3,
                     boxShadow: 3,
-                    transition: "transform 0.15s ease, box-shadow 0.15s ease",
+                    transition:
+                      "transform 0.15s ease, box-shadow 0.15s ease",
                     "&:hover": {
                       transform: { md: "translateY(-4px)" },
                       boxShadow: { md: 6 },
@@ -277,7 +331,8 @@ const HanziContainer = () => {
                       color="primary"
                       sx={{
                         mb: 1,
-                        fontFamily: '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
+                        fontFamily:
+                          '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
                         fontSize: {
                           xs: "2.5rem",
                           sm: "3rem",
@@ -290,13 +345,25 @@ const HanziContainer = () => {
                     </Typography>
 
                     <Stack spacing={0.5} sx={{ mb: 2 }}>
-                      <Typography variant="subtitle1" align="center" color="text.secondary">
+                      <Typography
+                        variant="subtitle1"
+                        align="center"
+                        color="text.secondary"
+                      >
                         <strong>Pinyin:</strong> {character.pinyin}
                       </Typography>
-                      <Typography variant="subtitle1" align="center" color="text.secondary">
+                      <Typography
+                        variant="subtitle1"
+                        align="center"
+                        color="text.secondary"
+                      >
                         <strong>Cantonese:</strong> {character.cantonese}
                       </Typography>
-                      <Typography variant="subtitle1" align="center" color="text.secondary">
+                      <Typography
+                        variant="subtitle1"
+                        align="center"
+                        color="text.secondary"
+                      >
                         <strong>Hán Việt:</strong> {character.hanViet}
                       </Typography>
                     </Stack>
@@ -325,16 +392,32 @@ const HanziContainer = () => {
         </Grid>
       </Stack>
 
-      {/* Dialog for full description */}
+      {/* Glassy Dialog for full description */}
       <Dialog
         open={!!selectedCharacter}
         onClose={handleCloseDialog}
         maxWidth="md"
         fullWidth
         PaperProps={{
-          sx: {
-            borderRadius: 3,
+          sx: (theme) => ({
+            borderRadius: 4,
             overflow: "hidden",
+            background:
+              theme.palette.mode === "dark"
+                ? "linear-gradient(145deg, rgba(15,23,42,0.97), rgba(15,23,42,0.94))"
+                : "linear-gradient(145deg, rgba(248,250,252,0.98), rgba(229,231,235,0.96))",
+            boxShadow: "0 32px 90px rgba(0,0,0,0.9)",
+            border: "1px solid rgba(148,163,184,0.6)",
+            backdropFilter: "blur(26px) saturate(170%)",
+            WebkitBackdropFilter: "blur(26px) saturate(170%)",
+          }),
+        }}
+        slotProps={{
+          backdrop: {
+            sx: {
+              background: "rgba(15,23,42,0.78)",
+              backdropFilter: "blur(10px)",
+            },
           },
         }}
       >
@@ -346,7 +429,7 @@ const HanziContainer = () => {
                 pt: 3,
                 pb: 2,
                 borderBottom: "1px solid",
-                borderColor: "divider",
+                borderColor: "rgba(30,64,175,0.4)",
               }}
             >
               <Stack
@@ -359,11 +442,18 @@ const HanziContainer = () => {
                   variant="h2"
                   color="primary"
                   sx={{
-                    fontFamily: '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
+                    fontFamily:
+                      '"Ma Shan Zheng", "kaiti", "songti", "heiti", serif',
                     lineHeight: 1,
                   }}
                 >
                   {selectedCharacter.character}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  sx={{ opacity: 0.75, mt: { xs: 1, sm: 0 } }}
+                >
+                  Detailed pronunciation &amp; meaning
                 </Typography>
               </Stack>
             </DialogTitle>
@@ -379,84 +469,47 @@ const HanziContainer = () => {
               <Stack spacing={3}>
                 {/* Pronunciations */}
                 <Box>
-                  <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ mb: 1.5, fontWeight: 600 }}
+                  >
                     Pronunciations
                   </Typography>
 
-                  <Box
-                    sx={{
-                      p: 2,
-                      borderRadius: 2,
-                      bgcolor: "background.default",
-                      border: "1px solid",
-                      borderColor: "divider",
-                    }}
-                  >
-                    <Stack spacing={1.5}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          gap: 2,
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
-                          Pinyin
-                        </Typography>
-                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
-                          {selectedCharacter.pinyin || "—"}
-                        </Typography>
-                      </Box>
+                  <PronunciationPanel>
+                    <PronLabel>Section</PronLabel>
+                    <PronValue>Value</PronValue>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          gap: 2,
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
-                          Cantonese
-                        </Typography>
-                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
-                          {selectedCharacter.cantonese || "—"}
-                        </Typography>
-                      </Box>
+                    <PronLabel>Pinyin</PronLabel>
+                    <PronValue>{selectedCharacter.pinyin || "—"}</PronValue>
 
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          gap: 2,
-                          flexWrap: "wrap",
-                        }}
-                      >
-                        <Typography variant="subtitle2" sx={{ minWidth: 90, fontWeight: 600 }}>
-                          Hán Việt
-                        </Typography>
-                        <Typography variant="body2" sx={{ flex: 1, textAlign: "right" }}>
-                          {selectedCharacter.hanViet || "—"}
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  </Box>
+                    <PronLabel>Cantonese</PronLabel>
+                    <PronValue>
+                      {selectedCharacter.cantonese || "—"}
+                    </PronValue>
+
+                    <PronLabel>Hán Việt</PronLabel>
+                    <PronValue>{selectedCharacter.hanViet || "—"}</PronValue>
+                  </PronunciationPanel>
                 </Box>
 
                 {/* Meaning */}
                 <Box>
-                  <Typography variant="h6" sx={{ mb: 1.5, fontWeight: 600 }}>
-                    Meaning & Notes
+                  <Typography
+                    variant="h6"
+                    sx={{ mb: 1.5, fontWeight: 600 }}
+                  >
+                    Meaning &amp; Notes
                   </Typography>
 
                   <Box
                     sx={{
-                      p: 2,
-                      borderRadius: 2,
-                      bgcolor: "background.paper",
-                      border: "1px solid",
-                      borderColor: "divider",
+                      p: 2.25,
+                      borderRadius: 18,
+                      background: "rgba(15,23,42,0.92)",
+                      border: "1px solid rgba(51,65,85,0.9)",
+                      boxShadow: "0 18px 50px rgba(15,23,42,0.9)",
+                      color: "rgba(226,232,240,0.96)",
                     }}
                   >
                     {formatDescription(selectedCharacter.description)}
@@ -470,7 +523,7 @@ const HanziContainer = () => {
                 px: 4,
                 py: 2,
                 borderTop: "1px solid",
-                borderColor: "divider",
+                borderColor: "rgba(30,64,175,0.4)",
               }}
             >
               <Button onClick={handleCloseDialog}>Close</Button>
